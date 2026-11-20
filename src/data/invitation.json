@@ -13,7 +13,7 @@
       "show": true
     },
     "dresscode": {
-      "show": false
+      "show": true
     },
     "location": {
       "show": true
