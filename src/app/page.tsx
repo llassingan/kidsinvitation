@@ -3,6 +3,7 @@ import OpeningGreeting from "@/components/invitation/OpeningGreeting";
 import ChildProfile from "@/components/invitation/ChildProfile";
 import EventDetails from "@/components/invitation/EventDetails";
 import EventLocation from "@/components/invitation/EventLocation";
+import GiftSection from "@/components/invitation/GiftSection";
 import WishesSection from "@/components/invitation/WishesSection";
 
 import SoundToggle from "@/components/ui/SoundToggle";
@@ -30,7 +31,9 @@ const firstAnchor = sectionShown("greeting")
       ? "#acara"
       : sectionShown("location")
         ? "#lokasi"
-        : sectionShown("wishes")
+        : sectionShown("gift")
+          ? "#hadiah"
+          : sectionShown("wishes")
           ? "#doa"
           : null;
 
@@ -47,6 +50,7 @@ export default async function Page({ searchParams }: Props) {
         {sectionShown("profile") && <ChildProfile />}
         {sectionShown("event") && <EventDetails />}
         {sectionShown("location") && <EventLocation />}
+        {sectionShown("gift") && <GiftSection />}
         {sectionShown("wishes") && <WishesSection />}
 
         {footer && (

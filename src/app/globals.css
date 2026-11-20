@@ -215,6 +215,18 @@ h3 {
   pointer-events: none;
 }
 
+/* Light that crosses the account card on hover, so the card reads as plastic. */
+.gift-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 34%, rgb(255 255 255 / 0.16) 48%, transparent 62%);
+  transform: translateX(-130%);
+  transition: transform 900ms ease;
+}
+.gift-card:hover .gift-sheen {
+  transform: translateX(130%);
+}
+
 /* A shorter Arabic line for the footer signature. */
 .arabic-tight {
   line-height: 1.65;

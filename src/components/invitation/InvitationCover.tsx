@@ -80,14 +80,14 @@ export default function InvitationCover({ guest, nextAnchor }: { guest: string |
         className="cover-envelope absolute inset-0 z-10 flex items-center justify-center px-4 py-[7vh]"
       >
         <div className="relative mx-auto aspect-[3/4] w-full max-w-[min(430px,58svh)] [perspective:1400px]">
-          <div aria-hidden="true" className="peek-boy absolute -top-[19%] right-[7%] z-0 w-[34%]">
+          <div aria-hidden="true" className="peek-boy absolute inset-x-0 -top-[23%] z-0 flex justify-center">
             <img
               src="/img/boy-wave.webp"
               alt=""
               width={525}
               height={900}
               fetchPriority="high"
-              className="cover-kids w-full drop-shadow-[0_16px_18px_rgba(16,56,58,.22)]"
+              className="cover-kids w-[40%] max-w-[180px] drop-shadow-[0_16px_18px_rgba(16,56,58,.22)]"
             />
           </div>
 

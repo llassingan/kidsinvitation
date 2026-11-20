@@ -18,6 +18,9 @@
     "location": {
       "show": true
     },
+    "gift": {
+      "show": true
+    },
     "wishes": {
       "show": true
     },
@@ -58,6 +61,17 @@
     "address": "[Alamat Lengkap]",
     "note": "[Patokan / petunjuk arah]",
     "mapsUrl": "https://maps.google.com/?q="
+  },
+  "gift": {
+    "intro": "Doa dan kehadiran Bapak/Ibu sudah cukup membahagiakan kami. Kalau tetap ingin menitipkan buah tangan, silakan lewat rekening berikut.",
+    "accounts": [
+      {
+        "bank": "[Nama Bank]",
+        "number": "[Nomor Rekening]",
+        "holder": "[Nama Pemilik Rekening]"
+      }
+    ],
+    "note": "Mohon tulis nama pengirim di berita transfer supaya kami bisa berterima kasih langsung."
   },
   "wishes": {
     "showPublicWishes": true
