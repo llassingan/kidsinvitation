@@ -37,9 +37,15 @@ Semua isi undangan ada di `src/data/invitation.json`. Cukup ubah file itu, kompo
 | `wishes.showPublicWishes` | Tampilkan daftar doa yang sudah masuk |
 | `gk.greeting`, `gk.blessing` | Kalimat pembuka dan doa untuk anak |
 | `audio.enabled` | Bunyi antarmuka (bukan musik latar) |
-| `seo.siteUrl` | URL publik, dipakai metadata Open Graph |
+| `seo.siteUrl` | URL publik untuk metadata Open Graph dan canonical. Harus domain produksi, kalau tidak gambar preview menunjuk ke localhost |
 
 Umur anak dihitung otomatis dari `child.birthDate`, jadi tidak perlu diperbarui tiap bulan. Kalau `birthDate` belum diisi format yang benar, badge umur memakai angka 1.
+
+## Preview saat link dibagikan
+
+`src/app/layout.tsx` mengirim `og:title`, `og:description`, `og:image`, `og:url`, `og:site_name`, `og:locale`, dan `twitter:card`. Gambarnya `public/og.jpg` (1200x630, JPEG 75 KB), dipotong dari `public/img/cover-hero.webp` dengan ImageMagick. JPEG dipilih karena Telegram dan WhatsApp tidak selalu menerima WebP.
+
+Sebelum dibagikan, set `seo.siteUrl` ke domain produksi (atau env `NEXT_PUBLIC_SITE_URL`). Tanpa itu `og:image` menunjuk ke `http://localhost:3000/og.jpg` dan preview tampil tanpa gambar. WhatsApp menyimpan cache preview; kalau gambar lama masih muncul setelah deploy, tambahkan query (`?v=2`) pada tautan yang dibagikan.
 
 ## Nama tamu di sampul
 

@@ -22,19 +22,32 @@ const arabic = Amiri({
   weight: ["400", "700"],
 });
 
+// Deployment can override the public origin; previews break if og:image stays on localhost.
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? invitation.seo.siteUrl;
 const title = `Undangan Aqiqah & Khitanan ${invitation.child.fullName}`;
+const description = invitation.seo.description;
+const previewAlt = `Ilustrasi ${invitation.child.nickname} melambaikan tangan di depan masjid berkubah`;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(invitation.seo.siteUrl),
+  metadataBase: new URL(siteUrl),
   title,
-  description: invitation.seo.description,
+  description,
+  alternates: { canonical: "/" },
   openGraph: {
-    title,
-    description: invitation.seo.description,
-    images: [{ url: "/img/cover-hero.webp", width: 1400, height: 933, alt: "Ilustrasi undangan" }],
     type: "website",
+    url: "/",
+    siteName: `Aqiqah & Khitanan ${invitation.child.nickname}`,
+    locale: "id_ID",
+    title,
+    description,
+    images: [{ url: "/og.jpg", width: 1200, height: 630, type: "image/jpeg", alt: previewAlt }],
   },
-  twitter: { card: "summary_large_image", title, description: invitation.seo.description },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: [{ url: "/og.jpg", alt: previewAlt }],
+  },
 };
 
 export const viewport: Viewport = {
