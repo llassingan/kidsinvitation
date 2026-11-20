@@ -26,7 +26,7 @@ export default function ChildProfile() {
         <Reveal className="mx-auto max-w-xl text-center">
           <p className="label">Perkenalan</p>
           <h2 id="profil-title" className="mt-2 text-h2 text-teal">
-            Kenalan dengan {child.nickname}
+            Mengenal {child.nickname}
           </h2>
         </Reveal>
 
@@ -68,8 +68,8 @@ export default function ChildProfile() {
             <Reveal delay={0.26}>
               <p className="mt-6 max-w-prose text-sm text-ink/75">
                 Saat ini {child.nickname} berusia{' '}
-                <span className="font-bold text-teal">{ageBadge} bulan</span> dan masih belajar
-                tersenyum setiap hari. Doamu untuknya kami simpan baik-baik.
+                <span className="font-bold text-teal">{ageBadge} bulan</span> dan sedang belajar
+                tersenyum setiap hari. Doa Bapak/Ibu untuknya kami simpan baik-baik.
               </p>
             </Reveal>
 

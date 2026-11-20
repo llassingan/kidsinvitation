@@ -23,7 +23,7 @@ export default function EventDetails() {
           <Reveal>
             <p className="label">Catat tanggalnya</p>
             <h2 id="acara-title" className="mt-2 text-h2 text-teal">
-              Hari Bahagia Si Kecil
+              Hari Bahagia Putra Kami
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
@@ -115,9 +115,9 @@ export default function EventDetails() {
                   className="h-44 w-auto flex-none self-end"
                 />
                 <div className="mb-3 flex-1 rounded-lg rounded-bl-none border border-sand bg-cream px-4 py-3 shadow-note">
-                  <p className="text-sm font-bold text-teal">Jangan sampai lupa, ya!</p>
+                  <p className="text-sm font-bold text-teal">Kode pakaian</p>
                   <p className="mt-1 text-sm text-ink/80">
-                    Dresscode: <span className="font-bold">{invitation.event.dressCode}</span>
+                    Mohon kenakan <span className="font-bold">{invitation.event.dressCode}</span>
                   </p>
                 </div>
               </div>

@@ -212,10 +212,10 @@ export default function InvitationCover({ guest, nextAnchor }: { guest: string |
             height={900}
             className="mx-auto h-[clamp(9rem,24vh,13rem)] w-auto drop-shadow-[0_18px_20px_rgba(16,56,58,.16)]"
           />
-          <p className="label mt-3">Undangan terbuka</p>
-          <h1 className="mt-1 text-h1 text-teal">Selamat datang!</h1>
+          <p className="label mt-3">{invitation.event.title}</p>
+          <h1 className="mt-1 text-h1 text-teal">Selamat datang</h1>
           <p className="mx-auto mt-3 max-w-[28rem] text-ink/80">
-            Terima kasih sudah membuka undangan {invitation.child.nickname}. Kisahnya dimulai dari sini.
+            Terima kasih telah membuka undangan kami untuk {invitation.child.nickname}.
           </p>
         </div>
 

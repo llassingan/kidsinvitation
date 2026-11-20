@@ -53,8 +53,8 @@ export async function POST(request: Request) {
   }
 
   const errors: Record<string, string> = {};
-  if (name.length < 2) errors.name = "Tulis namamu, minimal 2 huruf.";
-  if (message.length < 3) errors.message = "Tulis doa atau harapanmu untuk si kecil.";
+  if (name.length < 2) errors.name = "Tulis nama Bapak/Ibu, minimal 2 huruf.";
+  if (message.length < 3) errors.message = "Tulis doa atau harapan untuk putra kami.";
   if (Object.keys(errors).length) {
     return Response.json({ error: "Ada isian yang belum lengkap.", errors }, { status: 422 });
   }

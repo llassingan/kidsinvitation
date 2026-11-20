@@ -18,9 +18,9 @@ export default function EventLocation() {
 
       <div className="relative mx-auto max-w-6xl">
         <Reveal>
-          <p className="label">Temui kami di sini</p>
+          <p className="label">Lokasi acara</p>
           <h2 id="lokasi-title" className="mt-2 max-w-xl text-h2 text-teal">
-            Jalan Menuju Rumah Bahagia
+            Jalan Menuju Acara
           </h2>
         </Reveal>
 

@@ -13,7 +13,7 @@
       "show": true
     },
     "dresscode": {
-      "show": true
+      "show": false
     },
     "location": {
       "show": true
@@ -63,7 +63,7 @@
     "mapsUrl": "https://maps.google.com/?q="
   },
   "gift": {
-    "intro": "Doa dan kehadiran Bapak/Ibu sudah cukup membahagiakan kami. Kalau tetap ingin menitipkan buah tangan, silakan lewat rekening berikut.",
+    "intro": "Kehadiran dan doa Bapak/Ibu sudah cukup membahagiakan kami. Bila tetap ingin menitipkan tanda kasih, kami sediakan rekening berikut.",
     "accounts": [
       {
         "bank": "[Nama Bank]",
@@ -71,13 +71,13 @@
         "holder": "[Nama Pemilik Rekening]"
       }
     ],
-    "note": "Mohon tulis nama pengirim di berita transfer supaya kami bisa berterima kasih langsung."
+    "note": "Mohon cantumkan nama Bapak/Ibu pada berita transfer agar kami dapat berterima kasih langsung."
   },
   "wishes": {
     "showPublicWishes": true
   },
   "gk": {
-    "greeting": "Dengan memohon rahmat dan ridha Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk menghadiri syukuran aqiqah dan khitanan putra tercinta kami.",
+    "greeting": "Dengan memohon rahmat dan ridha Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri syukuran aqiqah dan khitanan putra kami.",
     "blessing": "Semoga tumbuh menjadi anak yang shalih, berakhlak mulia, dan senantiasa menjadi penyejuk hati keluarga."
   },
   "audio": {

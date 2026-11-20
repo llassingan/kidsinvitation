@@ -110,7 +110,7 @@ export default function GiftSection() {
             <Reveal>
               <p className="label">Titip hadiah</p>
               <h2 id="hadiah-title" className="mt-2 max-w-md text-h2 text-teal">
-                Kalau Ingin Menitip Hadiah
+                Bila Ingin Menitipkan Hadiah
               </h2>
               <p className="mt-4 max-w-[46ch] text-ink/80">{invitation.gift.intro}</p>
             </Reveal>

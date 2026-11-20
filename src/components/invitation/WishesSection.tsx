@@ -11,7 +11,7 @@ type FormState = 'idle' | 'sending' | 'sent' | 'error'
 
 const attendanceLabels: Record<Wish['attendance'], string> = {
   hadir: 'InsyaAllah hadir',
-  ragu: 'Masih ragu',
+  ragu: 'Belum pasti',
   tidak: 'Belum bisa hadir',
 }
 
@@ -65,8 +65,8 @@ export default function WishesSection() {
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const nextErrors: Record<string, string> = {}
-    if (name.trim().length < 2) nextErrors.name = 'Tulis namamu, minimal 2 huruf.'
-    if (message.trim().length < 3) nextErrors.message = 'Tulis doa atau harapanmu untuk si kecil.'
+    if (name.trim().length < 2) nextErrors.name = 'Tulis nama Bapak/Ibu, minimal 2 huruf.'
+    if (message.trim().length < 3) nextErrors.message = 'Tulis doa atau harapan untuk putra kami.'
     setErrors(nextErrors)
     if (Object.keys(nextErrors).length) return
 
@@ -135,9 +135,9 @@ export default function WishesSection() {
 
       <div className="relative mx-auto max-w-6xl">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <p className="label text-gold">Bab terakhir</p>
+          <p className="label text-gold">Doa dan harapan</p>
           <h2 id="doa-title" className="mt-2 text-h2 text-cream">
-            Doamu Sangat Berarti untuk Kami
+            Doa Bapak/Ibu Sangat Berarti bagi Kami
           </h2>
           <p className="mt-4 text-cream/80">
             Doa dan harapan terbaik dari Bapak/Ibu/Saudara/i akan menjadi hadiah yang sangat berarti bagi
@@ -158,7 +158,7 @@ export default function WishesSection() {
                 className="aspect-[16/10] w-full object-cover"
               />
               <figcaption className="absolute inset-x-0 bottom-0 bg-night/70 px-4 py-2 text-xs font-semibold text-cream">
-                Setiap doa yang kamu tulis, kami baca perlahan.
+                Setiap doa yang Bapak/Ibu titipkan kami baca satu per satu.
               </figcaption>
             </figure>
           </Reveal>
@@ -188,10 +188,10 @@ export default function WishesSection() {
                       animate={reduced ? undefined : { rotate: [0, -3, 3, 0] }}
                       transition={{ duration: 1.2, repeat: 2 }}
                     />
-                    <p className="mt-3 font-display text-2xl text-teal">Alhamdulillah, terima kasih!</p>
+                    <p className="mt-3 font-display text-2xl text-teal">Alhamdulillah</p>
                     <p className="mt-2 text-sm text-ink/80">
-                      {confirmation}, kami sudah menerima doamu. Semoga Allah membalas dengan kebaikan yang
-                      berlipat.
+                      Terima kasih, {confirmation}. Doa Bapak/Ibu sudah kami terima. Semoga Allah membalas
+                      kebaikan Bapak/Ibu dengan yang berlipat.
                     </p>
                     <button type="button" onClick={() => setState('idle')} className="btn-ghost mt-5">
                       Tulis doa lagi
@@ -199,8 +199,8 @@ export default function WishesSection() {
                   </motion.div>
                 ) : (
                   <motion.div key="form" initial={false} exit={{ opacity: 0 }}>
-                    <h3 className="font-display text-2xl text-teal">Titipkan doamu</h3>
-                    <p className="mt-1 text-sm text-ink/70">Semua kolom bertanda wajib diisi.</p>
+                    <h3 className="font-display text-2xl text-teal">Titipkan doa</h3>
+                    <p className="mt-1 text-sm text-ink/70">Kolom bertanda * wajib diisi.</p>
 
                     <div className="mt-4">
                       <label htmlFor="wish-name" className="text-sm font-bold text-teal">
@@ -213,7 +213,7 @@ export default function WishesSection() {
                         onChange={(e) => setName(e.target.value)}
                         maxLength={60}
                         autoComplete="name"
-                        placeholder="Nama kamu"
+                        placeholder="Nama Bapak/Ibu"
                         aria-invalid={!!errors.name}
                         aria-describedby={errors.name ? 'wish-name-error' : undefined}
                         className="mt-1.5 w-full rounded-md border-2 border-sand bg-white px-3 py-2.5 text-ink placeholder:text-ink/60 focus:border-emerald"
@@ -242,7 +242,7 @@ export default function WishesSection() {
                         onChange={(e) => setMessage(e.target.value)}
                         maxLength={400}
                         rows={4}
-                        placeholder="Tambahkan doa atau harapanmu untuk si kecil"
+                        placeholder="Tulis doa atau harapan untuk putra kami"
                         aria-invalid={!!errors.message}
                         aria-describedby={errors.message ? 'wish-message-error' : 'wish-message-count'}
                         className="mt-1.5 w-full resize-y rounded-md border-2 border-sand bg-white px-3 py-2.5 text-ink placeholder:text-ink/60 focus:border-emerald"
@@ -322,7 +322,7 @@ export default function WishesSection() {
             )}
             {wishes !== null && wishes.length === 0 && !loadError && (
               <p className="mt-4 rounded-md border border-dashed border-gold/40 px-4 py-6 text-center text-sm text-cream/80">
-                Belum ada doa yang tercatat. Kamu bisa jadi yang pertama menuliskan doa untuk si kecil.
+                Belum ada doa yang tercatat. Bapak/Ibu dapat menjadi yang pertama menuliskan doa.
               </p>
             )}
             {wishes !== null && wishes.length > 0 && !showCards && (

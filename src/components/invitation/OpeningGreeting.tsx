@@ -66,7 +66,7 @@ export default function OpeningGreeting() {
           <Reveal delay={0.1}>
             <h2 id="salam-title" className="mt-4 text-h2 text-teal">
               Assalamu&apos;alaikum,<br />
-              <span className="italic text-emerald">teman-teman sekalian</span>
+              <span className="italic text-emerald">Bapak/Ibu sekalian</span>
             </h2>
           </Reveal>
           <Reveal delay={0.2}>
