@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, useReducedMotion } from 'motion/react'
-import { calendarUrls, eventDate, formatEventDay, icsFile, invitation } from '@/lib/invitation'
+import { calendarUrls, eventDate, formatEventDay, invitation } from '@/lib/invitation'
 import Reveal from '@/components/ui/Reveal'
 import Countdown from './Countdown'
 
@@ -9,16 +9,6 @@ export default function EventDetails() {
   const reduced = useReducedMotion()
   const start = eventDate()
   const cal = calendarUrls(invitation)
-
-  const downloadIcs = () => {
-    const blob = new Blob([icsFile(invitation)], { type: 'text/calendar;charset=utf-8' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'aqiqah-khitanan.ics'
-    a.click()
-    URL.revokeObjectURL(url)
-  }
 
   return (
     <section
@@ -101,9 +91,9 @@ export default function EventDetails() {
                   <a href={cal.google} target="_blank" rel="noreferrer" className="btn-ghost">
                     Simpan ke Google Calendar
                   </a>
-                  <button type="button" onClick={downloadIcs} className="btn-ghost">
+                  <a href="/api/calendar" download="aqiqah-khitanan.ics" className="btn-ghost">
                     Unduh .ics
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>

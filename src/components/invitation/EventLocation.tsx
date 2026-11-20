@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, useReducedMotion } from 'motion/react'
-import { invitation, mapsEmbedUrl } from '@/lib/invitation'
+import { invitation, mapsEmbedUrl, mapsLink } from '@/lib/invitation'
 import Reveal from '@/components/ui/Reveal'
 
 export default function EventLocation() {
@@ -110,7 +110,7 @@ export default function EventLocation() {
                   {invitation.venue.note}
                 </p>
                 <a
-                  href={invitation.venue.mapsUrl}
+                  href={mapsLink(invitation)}
                   target="_blank"
                   rel="noreferrer"
                   className="btn-primary mt-5 w-full sm:w-auto"
