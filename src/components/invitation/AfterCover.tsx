@@ -19,10 +19,10 @@ function state() {
  * tree until the envelope is opened, so keyboard and screen-reader users start
  * at the cover instead of landing in content they cannot see.
  */
-export default function AfterCover({ children }: { children: React.ReactNode }) {
+export default function AfterCover({ children, gated }: { children: React.ReactNode; gated: boolean }) {
   const phase = useSyncExternalStore(subscribe, state, () => 'closed')
   const ref = useRef<HTMLDivElement>(null)
-  const locked = phase !== 'open'
+  const locked = gated && phase !== 'open'
 
   useEffect(() => {
     const node = ref.current

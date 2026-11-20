@@ -20,7 +20,7 @@ const POLLEN = Array.from({ length: 9 }, (_, i) => ({
 
 type Phase = 'closed' | 'opening' | 'open'
 
-export default function InvitationCover({ guest }: { guest: string | null }) {
+export default function InvitationCover({ guest, nextAnchor }: { guest: string | null; nextAnchor: string | null }) {
   const [phase, setPhase] = useState<Phase>('closed')
   const [reduced, setReduced] = useState(false)
 
@@ -219,8 +219,9 @@ export default function InvitationCover({ guest }: { guest: string | null }) {
           </p>
         </div>
 
+        {nextAnchor && (
         <a
-          href="#salam"
+          href={nextAnchor}
           aria-label="Gulir ke undangan"
           className="cover-cue absolute inset-x-0 bottom-5 mx-auto flex w-24 flex-col items-center gap-1 rounded-full py-2 text-teal/70 transition-colors hover:text-teal focus-visible:text-teal"
         >
@@ -229,6 +230,7 @@ export default function InvitationCover({ guest }: { guest: string | null }) {
           </svg>
           <span aria-hidden="true" className="text-[0.58rem] uppercase tracking-[0.22em]">Gulir</span>
         </a>
+        )}
       </div>
 
       <style>{`

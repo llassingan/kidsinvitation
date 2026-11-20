@@ -4,6 +4,16 @@ export type Invitation = typeof invitationJson;
 
 export const invitation: Invitation = invitationJson;
 
+export type SectionName = keyof Invitation["sections"];
+
+/**
+ * Sections are opt-out: a section renders unless its JSON entry says show:false,
+ * so hiding a block never means deleting its markup.
+ */
+export function sectionShown(name: SectionName): boolean {
+  return invitation.sections[name].show !== false;
+}
+
 export function eventDate(data: Invitation = invitation): Date {
   const { date, startTime } = data.event;
   return new Date(`${date}T${startTime}:00+08:00`);

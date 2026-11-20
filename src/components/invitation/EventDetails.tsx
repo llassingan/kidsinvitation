@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, useReducedMotion } from 'motion/react'
-import { calendarUrls, eventDate, formatEventDay, invitation } from '@/lib/invitation'
+import { calendarUrls, eventDate, formatEventDay, invitation, sectionShown } from '@/lib/invitation'
 import Reveal from '@/components/ui/Reveal'
 import Countdown from './Countdown'
 
@@ -99,10 +99,11 @@ export default function EventDetails() {
             </div>
           </Reveal>
 
-          <div className="flex flex-col gap-6">
+          <div className={`flex flex-col gap-6 ${sectionShown('dresscode') ? '' : 'justify-center'}`}>
             <Reveal delay={0.1}>
               <Countdown />
             </Reveal>
+            {sectionShown('dresscode') && (
             <Reveal delay={0.2}>
               <div className="flex items-end gap-3">
                 <img
@@ -121,6 +122,7 @@ export default function EventDetails() {
                 </div>
               </div>
             </Reveal>
+            )}
           </div>
         </div>
       </div>

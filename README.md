@@ -29,9 +29,9 @@ Semua isi undangan ada di `src/data/invitation.json`. Cukup ubah file itu, kompo
 | `event.startTime`, `event.endTime` | Jam `HH:MM` |
 | `event.timezone`, `event.timezoneLabel` | Zona waktu untuk kalender dan label jam |
 | `event.runs` | Daftar rangkaian acara |
-| `event.dressCode` | Kode berpakaian |
+| `sections.*.show` | Tampil atau sembunyikan bagian: `cover`, `greeting`, `profile`, `event`, `dresscode`, `location`, `wishes`, `footer` |
+| `event.dressCode` | Kode berpakaian, hanya dipakai kalau `sections.dresscode.show` bernilai `true` |
 | `venue.*` | Nama tempat, alamat, patokan, dan tautan Google Maps |
-| `wishes.enabled` | Matikan untuk menutup form doa |
 | `wishes.showPublicWishes` | Tampilkan daftar doa yang sudah masuk |
 | `gk.greeting`, `gk.blessing` | Kalimat pembuka dan doa untuk anak |
 | `audio.enabled` | Bunyi antarmuka (bukan musik latar) |

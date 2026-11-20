@@ -108,8 +108,6 @@ export default function WishesSection() {
     }
   }
 
-  if (!invitation.wishes.enabled) return null
-
   return (
     <section
       id="doa"

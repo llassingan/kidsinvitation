@@ -7,9 +7,9 @@ import WishesSection from "@/components/invitation/WishesSection";
 
 import SoundToggle from "@/components/ui/SoundToggle";
 import AfterCover from "@/components/invitation/AfterCover";
-import { invitation } from "@/lib/invitation";
+import { invitation, sectionShown } from "@/lib/invitation";
 
-// Guest name comes from ?to= so the page is request-specific, never prerendered.
+// The guest name arrives in ?to=; blocking on the server keeps the page per request.
 export const instant = false;
 
 type Props = { searchParams: Promise<{ [key: string]: string | string[] | undefined }> };
@@ -21,19 +21,35 @@ function guestFrom(params: { [key: string]: string | string[] | undefined }): st
   return value.replace(/[<>]/g, "").slice(0, 80) || null;
 }
 
+// First section still visible, so the cover's scroll cue never points at a hidden anchor.
+const firstAnchor = sectionShown("greeting")
+  ? "#salam"
+  : sectionShown("profile")
+    ? "#profil"
+    : sectionShown("event")
+      ? "#acara"
+      : sectionShown("location")
+        ? "#lokasi"
+        : sectionShown("wishes")
+          ? "#doa"
+          : null;
+
 export default async function Page({ searchParams }: Props) {
   const guest = guestFrom(await searchParams);
+  const cover = sectionShown("cover");
+  const footer = sectionShown("footer");
 
   return (
     <main id="top">
-      <InvitationCover guest={guest} />
-      <AfterCover>
-        <OpeningGreeting />
-        <ChildProfile />
-        <EventDetails />
-        <EventLocation />
-        <WishesSection />
+      {cover && <InvitationCover guest={guest} nextAnchor={firstAnchor} />}
+      <AfterCover gated={cover}>
+        {sectionShown("greeting") && <OpeningGreeting />}
+        {sectionShown("profile") && <ChildProfile />}
+        {sectionShown("event") && <EventDetails />}
+        {sectionShown("location") && <EventLocation />}
+        {sectionShown("wishes") && <WishesSection />}
 
+        {footer && (
         <footer className="relative overflow-hidden bg-cream px-4 pt-16 pb-24 text-center">
         <div aria-hidden="true" className="geo-bg geo-fade absolute inset-0 opacity-20" />
         <div aria-hidden="true" className="relative mx-auto w-full max-w-[520px] text-sand/60">
@@ -54,6 +70,7 @@ export default async function Page({ searchParams }: Props) {
           className="absolute bottom-0 left-1/2 h-1 w-40 -translate-x-1/2 bg-gradient-to-r from-transparent via-sand to-transparent"
         />
         </footer>
+        )}
       </AfterCover>
       <SoundToggle />
     </main>

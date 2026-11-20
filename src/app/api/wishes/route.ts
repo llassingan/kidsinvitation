@@ -1,5 +1,5 @@
 import { addWish, getWishes, type Wish } from "@/lib/wishes";
-import { invitation } from "@/lib/invitation";
+import { sectionShown } from "@/lib/invitation";
 import { randomUUID } from "node:crypto";
 
 const nameLimit = 60;
@@ -13,7 +13,7 @@ function clean(value: unknown, limit: number): string {
 }
 
 export async function GET() {
-  if (!invitation.wishes.enabled) return Response.json({ wishes: [] });
+  if (!sectionShown('wishes')) return Response.json({ wishes: [] });
   const wishes = await getWishes();
   return Response.json({
     wishes: wishes.map(({ id, name, message, attendance, createdAt }) => ({
@@ -27,7 +27,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  if (!invitation.wishes.enabled) {
+  if (!sectionShown('wishes')) {
     return Response.json({ error: "Form doa sedang ditutup." }, { status: 403 });
   }
 

@@ -1,4 +1,30 @@
 {
+  "sections": {
+    "cover": {
+      "show": true
+    },
+    "greeting": {
+      "show": true
+    },
+    "profile": {
+      "show": true
+    },
+    "event": {
+      "show": true
+    },
+    "dresscode": {
+      "show": false
+    },
+    "location": {
+      "show": true
+    },
+    "wishes": {
+      "show": true
+    },
+    "footer": {
+      "show": true
+    }
+  },
   "child": {
     "nickname": "[Nama Panggilan]",
     "fullName": "[Nama Lengkap Anak]",
@@ -19,7 +45,12 @@
     "endTime": "12:00",
     "timezone": "Asia/Makassar",
     "timezoneLabel": "WITA",
-    "runs": ["Syukuran Aqiqah", "Syukuran Khitanan", "Doa Bersama", "Ramah Tamah"],
+    "runs": [
+      "Syukuran Aqiqah",
+      "Syukuran Khitanan",
+      "Doa Bersama",
+      "Ramah Tamah"
+    ],
     "dressCode": "[Kode Dresscode]"
   },
   "venue": {
@@ -29,7 +60,6 @@
     "mapsUrl": "https://maps.google.com/?q="
   },
   "wishes": {
-    "enabled": true,
     "showPublicWishes": true
   },
   "gk": {
