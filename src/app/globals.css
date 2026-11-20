@@ -1,0 +1,305 @@
+@import "tailwindcss";
+
+/* Self-hosted Amiri: one file, no subset splitting, so Arabic marks keep their anchors. */
+@font-face {
+  font-family: "Amiri Local";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/fonts/amiri-arabic.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200E, U+2010-2011, U+FB50-FDFF, U+FE70-FEFC;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-teal: var(--teal);
+  --color-emerald: var(--emerald);
+  --color-turquoise: var(--turquoise);
+  --color-cream: var(--cream);
+  --color-sand: var(--sand);
+  --color-gold: var(--gold);
+  --color-terracotta: var(--terracotta);
+  --color-night: var(--night);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-arabic: var(--font-arabic);
+
+  --animate-twinkle: twinkle var(--twinkle-duration, 2.4s) ease-in-out infinite;
+  --animate-float: float 5s ease-in-out infinite;
+  --animate-seal: seal 2.2s ease-in-out infinite;
+  --animate-bob: bob 1.6s ease-in-out infinite;
+  --animate-drift: drift 22s linear infinite;
+
+  --text-eyebrow: var(--type-eyebrow);
+  --text-body: var(--type-body);
+  --text-h1: var(--type-h1);
+  --text-h2: var(--type-h2);
+  --text-count: var(--type-count);
+}
+
+:root {
+  --ink: #1f2a27;
+  --teal: #174f50;
+  --emerald: #287b67;
+  --turquoise: #70c6bb;
+  --cream: #fbf2e2;
+  --cream-deep: #f4e6cb;
+  --sand: #d9ae68;
+  --gold: #f2d59a;
+  --gold-deep: #b8863d;
+  --terracotta: #d98465;
+  --night: #10383a;
+  --soft-lavender: #c7b9dd;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 20px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 72px;
+  --space-8: 112px;
+
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-lg: 18px;
+  --radius-arch: 999px 999px var(--radius-md) var(--radius-md);
+  --radius-arch-sharp: 120px 120px var(--radius-md) var(--radius-md);
+
+  --shadow-lift: 0 18px 40px -22px rgb(23 79 80 / 0.55);
+  --shadow-cover: 0 40px 80px -40px rgb(16 56 58 / 0.7);
+  --shadow-note: 0 10px 24px -18px rgb(31 42 39 / 0.8);
+
+  --type-eyebrow: clamp(0.72rem, 0.68rem + 0.2vw, 0.8rem);
+  --type-body: clamp(0.98rem, 0.94rem + 0.25vw, 1.08rem);
+  --type-h2: clamp(2rem, 1.4rem + 3vw, 3.4rem);
+  --type-h1: clamp(2.6rem, 1.4rem + 6vw, 5.2rem);
+  --type-count: clamp(1.6rem, 1.1rem + 2.6vw, 2.8rem);
+
+  --geo-tile: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23174F50' stroke-width='1.1'%3E%3Cpath d='M60 4 78 22 104 22 104 48 98 60 104 72 104 98 78 98 60 116 42 98 16 98 16 72 22 60 16 48 16 22 42 22Z'/%3E%3Cpath d='M60 22 76 38 98 38 98 60 82 60 82 82 60 98 38 82 38 60 22 60 22 38 44 38Z'/%3E%3C/g%3E%3Ccircle cx='60' cy='60' r='7' fill='none' stroke='%23174F50' stroke-width='1.1'/%3E%3C/svg%3E");
+
+  color-scheme: light;
+}
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body), "Nunito", system-ui, sans-serif;
+  font-size: var(--type-body);
+  line-height: 1.65;
+  overflow-x: clip;
+  text-wrap: pretty;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display), "Cormorant Garamond", Georgia, serif;
+  line-height: 1.02;
+  text-wrap: balance;
+  letter-spacing: -0.015em;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--teal);
+}
+
+:where(a, button, input, textarea, select, summary, [role="button"]):focus-visible {
+  outline: 3px solid var(--terracotta);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Programmatic focus targets announce a new region, they are not controls. */
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* Arabic line: larger, looser, never used for Latin copy.
+   Amiri sets small at a given px, so the scale is boosted and the marks get air. */
+.arabic {
+  font-family: "Amiri Local", var(--font-arabic), "Amiri", serif;
+  direction: rtl;
+  font-size: 1.45em;
+  line-height: 2.05;
+  letter-spacing: 0;
+}
+
+/* Small label: sentence case, tight tracking. In the base layer so a section can
+   recolor it (gold on the night chapter) without fighting specificity. */
+@layer base {
+  .label {
+    font-family: var(--font-body), sans-serif;
+    font-size: var(--type-eyebrow);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--emerald);
+  }
+}
+
+.geo-bg {
+  background-image: var(--geo-tile);
+  background-size: 120px 120px;
+}
+
+.geo-fade {
+  mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%);
+}
+
+.gold-rule {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--sand), transparent);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px 26px;
+  border-radius: var(--radius-md);
+  background: var(--teal);
+  color: var(--cream);
+  font-weight: 700;
+  font-size: 1rem;
+  border: 1px solid var(--teal);
+  box-shadow: var(--shadow-lift);
+  transition: background 200ms ease, transform 200ms ease;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: var(--emerald);
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--teal);
+  color: var(--teal);
+  font-weight: 700;
+  background: transparent;
+  transition: background 180ms ease, color 180ms ease;
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  background: var(--teal);
+  color: var(--cream);
+}
+
+/* Confetti pieces in cover: gold foil squares + stars drawn with CSS */
+.confetti {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 1px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* A shorter Arabic line for the footer signature. */
+.arabic-compact {
+  font-size: 1.15em;
+  line-height: 1.7;
+}
+
+/* flap + pocket gradients: attribute selectors cannot hold var(), so they live here */
+.flap-fill {
+  fill: url(#flap-grad);
+}
+.pocket-side {
+  background: var(--teal);
+}
+.pocket-bottom {
+  background: linear-gradient(180deg, var(--emerald), var(--teal));
+}
+.cover-stage[data-phase="closed"] .cover-letter {
+  transition: transform 500ms ease;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1) rotate(12deg);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes seal {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgb(217 174 104 / 0.5);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 0 0 12px rgb(217 174 104 / 0);
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(1deg);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes sweep {
+  from {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  to {
+    transform: translateX(220%) skewX(-18deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

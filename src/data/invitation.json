@@ -1,0 +1,48 @@
+{
+  "child": {
+    "nickname": "[Nama Panggilan]",
+    "fullName": "[Nama Lengkap Anak]",
+    "birthPlace": "[Kota Kelahiran]",
+    "birthDate": "[YYYY-MM-DD]",
+    "illustration": "/img/baby-portrait.webp",
+    "profileIllustration": "/img/baby-rest.webp",
+    "photo": ""
+  },
+  "parents": {
+    "father": "[Nama Ayah]",
+    "mother": "[Nama Ibu]"
+  },
+  "event": {
+    "title": "Aqiqah & Khitanan",
+    "date": "2026-12-20",
+    "startTime": "09:00",
+    "endTime": "12:00",
+    "timezone": "Asia/Makassar",
+    "timezoneLabel": "WITA",
+    "runs": ["Syukuran Aqiqah", "Syukuran Khitanan", "Doa Bersama", "Ramah Tamah"],
+    "dressCode": "[Kode Dresscode]"
+  },
+  "venue": {
+    "name": "[Nama Tempat Acara]",
+    "address": "[Alamat Lengkap]",
+    "note": "[Patokan / petunjuk arah]",
+    "mapsUrl": "https://maps.google.com/?q="
+  },
+  "wishes": {
+    "enabled": true,
+    "showPublicWishes": true
+  },
+  "gk": {
+    "greeting": "Dengan memohon rahmat dan ridha Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk menghadiri syukuran aqiqah dan khitanan putra tercinta kami.",
+    "blessing": "Semoga tumbuh menjadi anak yang shalih, berakhlak mulia, dan senantiasa menjadi penyejuk hati keluarga."
+  },
+  "audio": {
+    "enabled": true,
+    "src": "",
+    "volume": 0.35
+  },
+  "seo": {
+    "siteUrl": "http://localhost:3000",
+    "description": "Undangan syukuran aqiqah dan khitanan putra kami."
+  }
+}
