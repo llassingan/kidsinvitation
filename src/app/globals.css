@@ -212,6 +212,10 @@ h3 {
 }
 
 /* A shorter Arabic line for the footer signature. */
+.arabic-tight {
+  line-height: 1.65;
+}
+
 .arabic-compact {
   font-size: 1.15em;
   line-height: 1.7;

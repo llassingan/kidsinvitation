@@ -44,7 +44,7 @@ export default function InvitationCover({ guest }: { guest: string | null }) {
 
   useEffect(() => {
     if (phase !== 'open') return
-    document.getElementById('undangan-isi')?.focus()
+    document.getElementById('undangan-isi')?.focus({ preventScroll: true })
   }, [phase])
 
   const open = useCallback(() => {
@@ -55,196 +55,224 @@ export default function InvitationCover({ guest }: { guest: string | null }) {
       return
     }
     setPhase('opening')
-    window.setTimeout(() => setPhase('open'), 2750)
+    window.setTimeout(() => setPhase('open'), 2150)
   }, [phase, reduced])
+
+  const opened = phase === 'open'
 
   return (
     <section
       aria-label="Sampul undangan"
       data-phase={phase}
-      className={`cover-stage relative flex flex-col items-center justify-center overflow-hidden bg-cream px-4 ${phase === 'open' ? 'pt-8 pb-2' : 'min-h-dvh py-10'}`}
+      className="cover-stage relative min-h-[100svh] overflow-hidden bg-cream"
     >
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
         <div className="absolute inset-x-0 bottom-0 h-[55%] bg-[radial-gradient(ellipse_at_50%_100%,#f7e3bf,transparent_70%)]" />
         <div className="geo-bg geo-fade absolute inset-0 opacity-25" />
         <FloatingStars count={14} />
       </div>
 
-      {phase !== 'open' ? (
-        <div className="relative z-10 w-full max-w-[430px]">
-          <div className="relative mx-auto aspect-[3/4] w-full [perspective:1400px]">
-            <div className="absolute inset-0 rounded-[26px] bg-gradient-to-b from-emerald to-teal shadow-cover" />
+      {/* The envelope keeps its place in the layout and fades out; the greeting
+          fades in beneath it, so opening never swaps one screen for another. */}
+      <div
+        inert={opened}
+        aria-hidden={opened}
+        className="cover-envelope absolute inset-0 z-10 flex items-center justify-center px-4 py-[7vh]"
+      >
+        <div className="relative mx-auto aspect-[3/4] w-full max-w-[min(430px,58svh)] [perspective:1400px]">
+          <div aria-hidden="true" className="peek-boy absolute -top-[19%] right-[7%] z-0 w-[34%]">
+            <img
+              src="/img/boy-wave.webp"
+              alt=""
+              width={525}
+              height={900}
+              fetchPriority="high"
+              className="cover-kids w-full drop-shadow-[0_16px_18px_rgba(16,56,58,.22)]"
+            />
+          </div>
 
-            <div className="cover-letter absolute inset-x-[6%] top-[7%] z-20 flex h-[76%] flex-col overflow-hidden rounded-[14px] border-2 border-sand bg-cream px-5 pb-5 pt-[31%] text-center">
-              <p className="arabic text-teal" lang="ar" dir="rtl">بسم الله الرحمن الرحيم</p>
-              <p className="label mt-2 text-[0.65rem]">Undangan syukuran</p>
-              <p className="mt-1 font-display text-[clamp(1.4rem,1rem+1.6vw,1.8rem)] leading-[1.05] font-semibold text-teal">
-                Aqiqah <span className="font-normal italic text-terracotta">&amp;</span> Khitanan
+          <div className="absolute inset-0 z-10 rounded-[26px] bg-gradient-to-b from-emerald to-teal shadow-cover" />
+
+          <div className="cover-letter absolute inset-x-[6%] top-[8%] z-20 flex h-[74%] flex-col overflow-hidden rounded-[14px] border-2 border-sand bg-cream px-5 pb-5 pt-[36%] text-center">
+            <p className="arabic arabic-tight text-teal" lang="ar" dir="rtl">
+              بسم الله الرحمن الرحيم
+            </p>
+            <p className="label mt-2 text-[0.65rem]">Undangan syukuran</p>
+            <p className="mt-1 font-display text-[clamp(1.4rem,1rem+1.6vw,1.8rem)] leading-[1.05] font-semibold text-teal">
+              Aqiqah <span className="font-normal italic text-terracotta">&amp;</span> Khitanan
+            </p>
+            <div className="gold-rule mx-auto mt-2.5 w-20" />
+            <p className="mt-2.5 text-[0.7rem] text-ink/70">untuk putra kami,</p>
+            <p className="font-display text-lg leading-tight font-semibold text-emerald">
+              {invitation.child.nickname}
+            </p>
+          </div>
+
+          {/* Folded flap: two paper halves meeting at a centre crease, with the
+              fold edges outlined so the shape reads as paper, not a panel. */}
+          <div className="cover-flap absolute inset-x-0 top-0 z-30 h-[32%] origin-top overflow-hidden rounded-t-[26px]">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="h-full w-full">
+              <defs>
+                <linearGradient id="flap-left" x1="0" y1="0" x2="0.55" y2="1">
+                  <stop offset="0" stopColor="#1b5a5b" />
+                  <stop offset="1" stopColor="#17494a" />
+                </linearGradient>
+                <linearGradient id="flap-right" x1="1" y1="0" x2="0.45" y2="1">
+                  <stop offset="0" stopColor="#22696b" />
+                  <stop offset="1" stopColor="#185253" />
+                </linearGradient>
+                <pattern id="flap-geo" width="9" height="9" patternUnits="userSpaceOnUse">
+                  <path
+                    d="M4.5 0l4.5 4.5-4.5 4.5L0 4.5z"
+                    fill="none"
+                    stroke="var(--gold)"
+                    strokeWidth=".35"
+                    opacity=".22"
+                  />
+                </pattern>
+              </defs>
+              <path d="M0 0H50L50 88Z" fill="url(#flap-left)" />
+              <path d="M100 0H50L50 88Z" fill="url(#flap-right)" />
+              <path d="M0 0H50L50 88Z" fill="url(#flap-geo)" opacity=".7" />
+              <path d="M100 0H50L50 88Z" fill="url(#flap-geo)" opacity=".7" />
+              <path d="M0 0L50 88L100 0" fill="none" stroke="#0F3B3C" strokeWidth=".6" strokeOpacity=".55" vectorEffect="non-scaling-stroke" />
+              <path d="M50 0V88" stroke="#0F3B3C" strokeWidth=".5" vectorEffect="non-scaling-stroke" opacity=".4" />
+              <path d="M0 0H100" stroke="var(--gold)" strokeWidth=".5" vectorEffect="non-scaling-stroke" opacity=".45" />
+            </svg>
+          </div>
+
+          <div className="cover-pocket absolute inset-x-0 bottom-0 z-40 flex h-[28%] items-end justify-center overflow-hidden rounded-b-[26px] px-4 pb-5">
+            <div className="absolute inset-0 bg-gradient-to-b from-teal to-emerald" />
+            <div className="pocket-side absolute inset-0" style={{ clipPath: 'polygon(0 0, 50% 38%, 0 100%)' }} />
+            <div className="pocket-side absolute inset-0" style={{ clipPath: 'polygon(100% 0, 50% 38%, 100% 100%)' }} />
+            <div className="pocket-bottom absolute inset-0" style={{ clipPath: 'polygon(0 100%, 50% 38%, 100% 100%)' }} />
+            <div className="geo-bg absolute inset-x-0 bottom-0 h-1/2 opacity-10" />
+            <div className="relative z-10 w-full">
+              <p className="text-center text-[0.68rem] font-bold tracking-wide text-gold/90">Kepada</p>
+              <p className="mt-0.5 truncate text-center text-base font-bold text-cream">
+                {guest ?? 'Bapak/Ibu/Saudara/i'}
               </p>
-              <div className="gold-rule mx-auto mt-2.5 w-20" />
-              <p className="mt-2.5 text-[0.7rem] text-ink/70">untuk putra kami,</p>
-              <p className="font-display text-lg leading-tight font-semibold text-emerald">
-                {invitation.child.nickname}
-              </p>
-            </div>
-
-            <div className="cover-flap absolute inset-x-0 top-0 z-30 flex h-[34%] origin-top justify-center">
-              <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="h-full w-full drop-shadow-[0_14px_14px_rgba(16,56,58,.28)]">
-                <defs>
-                  <linearGradient id="flap-grad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0" stopColor="var(--teal)" />
-                    <stop offset=".6" stopColor="var(--emerald)" />
-                    <stop offset="1" stopColor="var(--teal)" />
-                  </linearGradient>
-                  <pattern id="flap-geo" width="8" height="8" patternUnits="userSpaceOnUse">
-                    <path d="M4 0l4 4-4 4-4-4z" fill="none" stroke="var(--gold)" strokeWidth=".4" vectorEffect="non-scaling-stroke" opacity=".25" />
-                  </pattern>
-                </defs>
-                <path d="M0 0H100L50 46Z" className="flap-fill" />
-                <path d="M0 0H100L50 46Z" fill="url(#flap-geo)" />
-                <path d="M4 2.5h92" stroke="var(--gold)" strokeWidth=".5" vectorEffect="non-scaling-stroke" opacity=".7" />
-              </svg>
-            </div>
-
-            <div className="cover-pocket absolute inset-x-0 bottom-0 z-40 flex h-[33%] items-end justify-center overflow-hidden rounded-b-[26px] px-4 pb-5">
-              <div className="absolute inset-0 bg-gradient-to-b from-teal to-emerald" />
-              <div className="pocket-side absolute inset-0" style={{ clipPath: 'polygon(0 0, 50% 38%, 0 100%)' }} />
-              <div className="pocket-side absolute inset-0" style={{ clipPath: 'polygon(100% 0, 50% 38%, 100% 100%)' }} />
-              <div className="pocket-bottom absolute inset-0" style={{ clipPath: 'polygon(0 100%, 50% 38%, 100% 100%)' }} />
-              <div className="geo-bg absolute inset-x-0 bottom-0 h-1/2 opacity-10" />
-              <div className="relative z-10 w-full">
-                <p className="text-center text-[0.68rem] font-bold tracking-wide text-gold/90">
-                  Kepada
-                </p>
-                <p className="mt-0.5 truncate text-center text-base font-bold text-cream">
-                  {guest ?? 'Bapak/Ibu/Saudara/i'}
-                </p>
-                <button
-                  type="button"
-                  onClick={open}
-                  className="mt-2.5 w-full rounded-md border-2 border-gold bg-cream px-4 py-2.5 text-base font-bold text-teal shadow-lift transition-colors hover:bg-gold"
-                >
-                  Buka Undangan
-                </button>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={open}
-              tabIndex={-1}
-              aria-hidden="true"
-              className="cover-seal absolute top-[calc(15.6%-2.2rem)] left-[calc(50%-2.2rem)] z-40 flex h-[4.4rem] w-[4.4rem] items-center justify-center rounded-full border-[4px] border-gold/80 bg-terracotta text-cream shadow-[0_10px_20px_-12px_rgba(16,56,58,.9)]"
-            >
-              <span aria-hidden="true" className="absolute inset-1.5 rounded-full border border-gold/40" />
-              <span className="block h-7 w-7">
-                <Star />
-              </span>
-            </button>
-
-            <div aria-hidden="true" className="peek-corner absolute -top-[16%] right-[4%] z-10 w-[30%]">
-              <img
-                src="/img/boy-wave.webp"
-                alt=""
-                width={525}
-                height={900}
-                fetchPriority="high"
-                className="cover-kids w-full drop-shadow-[0_14px_18px_rgba(16,56,58,.22)]"
-              />
-            </div>
-            <div aria-hidden="true" className="peek-corner absolute -top-[13%] left-[4%] z-10 w-[28%]">
-              <img
-                src="/img/girl.webp"
-                alt=""
-                width={593}
-                height={900}
-                className="cover-kids w-full drop-shadow-[0_14px_18px_rgba(16,56,58,.2)]"
-              />
-            </div>
-
-            <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-50">
-              {CONFETTI.map((c, i) => (
-                <span
-                  key={i}
-                  className={`confetti ${c.round ? 'rounded-full' : ''}`}
-                  style={{
-                    left: c.left,
-                    top: '30%',
-                    transform: `rotate(${c.rotate}deg)`,
-                    animationDelay: `${c.delay * 0.1}s`,
-                  }}
-                />
-              ))}
-              {POLLEN.map((p, i) => (
-                <span
-                  key={`p${i}`}
-                  className="gold-particle"
-                  style={{ left: p.left, animationDelay: p.delay }}
-                />
-              ))}
+              <button
+                type="button"
+                onClick={open}
+                className="mt-2.5 w-full rounded-md border-2 border-gold bg-cream px-4 py-2.5 text-base font-bold text-teal shadow-lift transition-colors hover:bg-gold"
+              >
+                Buka Undangan
+              </button>
             </div>
           </div>
 
+          <button
+            type="button"
+            onClick={open}
+            tabIndex={-1}
+            aria-hidden="true"
+            className="cover-seal absolute top-[calc(28.2%-clamp(1.55rem,6vw,2.2rem))] left-[calc(50%-clamp(1.55rem,6vw,2.2rem))] z-40 flex h-[clamp(3.1rem,12vw,4.4rem)] w-[clamp(3.1rem,12vw,4.4rem)] items-center justify-center rounded-full border-[4px] border-gold/80 bg-terracotta text-cream shadow-[0_10px_20px_-12px_rgba(16,56,58,.9)]"
+          >
+            <span aria-hidden="true" className="absolute inset-1.5 rounded-full border border-gold/40" />
+            <span className="block w-[42%]">
+              <Star />
+            </span>
+          </button>
+
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-50">
+            {CONFETTI.map((c, i) => (
+              <span
+                key={i}
+                className={`confetti ${c.round ? 'rounded-full' : ''}`}
+                style={{
+                  left: c.left,
+                  top: '30%',
+                  transform: `rotate(${c.rotate}deg)`,
+                  animationDelay: `${c.delay * 0.1}s`,
+                }}
+              />
+            ))}
+            {POLLEN.map((p, i) => (
+              <span
+                key={`p${i}`}
+                className="gold-particle"
+                style={{ left: p.left, animationDelay: p.delay }}
+              />
+            ))}
+          </div>
         </div>
-      ) : (
-        <div
-          id="undangan-isi"
-          tabIndex={-1}
-          className="relative z-10 max-w-[32rem] text-center outline-none"
-        >
+      </div>
+
+      <div
+        id="undangan-isi"
+        tabIndex={-1}
+        className="cover-welcome absolute inset-0 z-20 flex items-center justify-center px-5 py-10 outline-none"
+      >
+        <div className="w-full max-w-[32rem] text-center">
           <img
             src="/img/boy-wave.webp"
             alt="Ilustrasi anak melambaikan tangan menyambut tamu"
             width={525}
             height={900}
-            className="mx-auto h-44 w-auto"
+            className="mx-auto h-[clamp(9rem,24vh,13rem)] w-auto drop-shadow-[0_18px_20px_rgba(16,56,58,.16)]"
           />
-          <p className="label mt-2">Undangan terbuka</p>
+          <p className="label mt-3">Undangan terbuka</p>
           <h1 className="mt-1 text-h1 text-teal">Selamat datang!</h1>
-          <p className="mt-3 text-ink/80">
+          <p className="mx-auto mt-3 max-w-[28rem] text-ink/80">
             Terima kasih sudah membuka undangan {invitation.child.nickname}. Kisahnya dimulai dari sini.
           </p>
-          <a href="#salam" className="btn-primary mt-6">
+          <a href="#salam" className="btn-primary mt-7">
             Lanjut ke undangan
           </a>
         </div>
-      )}
+      </div>
 
       <style>{`
         @media (prefers-reduced-motion: no-preference) {
-          .cover-stage[data-phase="closed"] .cover-hit,
           .cover-stage[data-phase="closed"] .cover-seal { animation: seal 2.6s ease-in-out infinite; }
           .cover-stage[data-phase="closed"] .cover-kids { animation: bob 3.6s ease-in-out infinite; transform-origin: 50% 100%; }
-          .cover-stage[data-phase="opening"] .cover-flap {
-            transform: rotateX(-165deg) translateY(-6%);
-            transition: transform 950ms cubic-bezier(.55,.05,.3,1), opacity 250ms ease 700ms;
-            opacity: 0;
+          .cover-stage:is([data-phase="opening"], [data-phase="open"]) .cover-flap {
+            transform: rotateX(172deg);
+            transition: transform 900ms cubic-bezier(.6,.02,.35,1);
           }
-          .cover-stage[data-phase="opening"] .cover-seal {
+          .cover-stage:is([data-phase="opening"], [data-phase="open"]) .cover-seal {
             opacity: 0;
-            transform: scale(.3);
-            transition: opacity 240ms ease, transform 360ms cubic-bezier(.4,0,.7,.4);
+            transform: scale(.4) rotate(18deg);
+            transition: opacity 260ms ease, transform 380ms cubic-bezier(.4,0,.7,.4);
           }
-          .cover-stage[data-phase="opening"] .cover-letter {
+          .cover-stage:is([data-phase="opening"], [data-phase="open"]) .cover-letter {
             z-index: 45;
-            transform: translateY(-6%) scale(1.03);
-            transition: transform 1200ms cubic-bezier(.34,1.12,.4,1) 500ms;
+            transform: translateY(-26%) scale(1.02);
+            transition: transform 1150ms cubic-bezier(.34,1.06,.4,1) 600ms;
           }
-          .cover-stage[data-phase="opening"] .cover-pocket {
+          .cover-stage:is([data-phase="opening"], [data-phase="open"]) .peek-boy {
             opacity: 0;
-            transform: translateY(10%);
-            transition: opacity 600ms ease 1500ms, transform 700ms ease 1500ms;
+            transform: translateY(-12%);
+            transition: opacity 520ms ease 820ms, transform 900ms ease 820ms;
           }
-          .cover-stage[data-phase="opening"] .peek-corner {
-            opacity: 0;
-            transform: translateY(-14%);
-            transition: opacity 500ms ease 900ms, transform 900ms ease 900ms;
-          }
-          .cover-stage[data-phase="opening"] .confetti { animation: confetti-fall 1900ms cubic-bezier(.2,.6,.3,1) 500ms both; }
-          .cover-stage[data-phase="opening"] .gold-particle { animation: gold-rise 1800ms ease-out 700ms both; }
+          .cover-stage[data-phase="opening"] .confetti { animation: confetti-fall 1900ms cubic-bezier(.2,.6,.3,1) 420ms both; }
+          .cover-stage[data-phase="opening"] .gold-particle { animation: gold-rise 1800ms ease-out 620ms both; }
+        }
+        .cover-envelope { transition: opacity 280ms ease, filter 380ms ease, transform 620ms cubic-bezier(.4,0,.2,1), visibility 0s linear 300ms; }
+        .cover-stage[data-phase="open"] .cover-envelope {
+          opacity: 0;
+          filter: blur(7px);
+          transform: scale(1.03) translateY(-1%);
+          visibility: hidden;
+        }
+        .cover-welcome {
+          opacity: 0;
+          transform: translateY(14px) scale(.985);
+          pointer-events: none;
+          transition: opacity 520ms ease 300ms, transform 700ms cubic-bezier(.22,.8,.3,1) 300ms;
+        }
+        .cover-stage[data-phase="open"] .cover-welcome {
+          opacity: 1;
+          transform: none;
+          pointer-events: auto;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .cover-envelope, .cover-welcome { transition-duration: 1ms; transition-delay: 0ms; }
         }
         .cover-letter { transition: transform 400ms ease; }
-        .cover-flap { transition: transform 400ms ease; }
+        .cover-flap { transition: transform 400ms ease; transform-style: preserve-3d; backface-visibility: hidden; filter: drop-shadow(0 8px 8px rgba(16,56,58,.16)); }
+        .cover-flap svg { overflow: visible; }
         .gold-particle {
           position: absolute; top: 50%; width: 6px; height: 6px; border-radius: 999px;
           background: var(--gold); opacity: 0;
