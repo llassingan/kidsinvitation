@@ -217,10 +217,18 @@ export default function InvitationCover({ guest }: { guest: string | null }) {
           <p className="mx-auto mt-3 max-w-[28rem] text-ink/80">
             Terima kasih sudah membuka undangan {invitation.child.nickname}. Kisahnya dimulai dari sini.
           </p>
-          <a href="#salam" className="btn-primary mt-7">
-            Lanjut ke undangan
-          </a>
         </div>
+
+        <a
+          href="#salam"
+          aria-label="Gulir ke undangan"
+          className="cover-cue absolute inset-x-0 bottom-5 mx-auto flex w-24 flex-col items-center gap-1 rounded-full py-2 text-teal/70 transition-colors hover:text-teal focus-visible:text-teal"
+        >
+          <svg className="cue-arrow" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M5 9l7 7 7-7" />
+          </svg>
+          <span aria-hidden="true" className="text-[0.58rem] uppercase tracking-[0.22em]">Gulir</span>
+        </a>
       </div>
 
       <style>{`
@@ -273,6 +281,11 @@ export default function InvitationCover({ guest }: { guest: string | null }) {
         .cover-letter { transition: transform 400ms ease; }
         .cover-flap { transition: transform 400ms ease; transform-style: preserve-3d; backface-visibility: hidden; filter: drop-shadow(0 8px 8px rgba(16,56,58,.16)); }
         .cover-flap svg { overflow: visible; }
+        .cover-stage[data-phase="open"] .cue-arrow { animation: cue-bob 1.9s ease-in-out 900ms infinite; }
+        @keyframes cue-bob {
+          0%, 100% { transform: translateY(0); opacity: .6; }
+          50% { transform: translateY(7px); opacity: 1; }
+        }
         .gold-particle {
           position: absolute; top: 50%; width: 6px; height: 6px; border-radius: 999px;
           background: var(--gold); opacity: 0;

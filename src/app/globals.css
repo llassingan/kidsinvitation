@@ -38,6 +38,10 @@
   --text-count: var(--type-count);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --ink: #1f2a27;
   --teal: #174f50;
