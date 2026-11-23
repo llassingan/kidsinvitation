@@ -31,9 +31,9 @@ export default function BackgroundMusic({ src, playing }: { src: string; playing
 
   useEffect(() => {
     if (!src) return
-    // No src in the markup and preload "none": the 4 MB track never downloads
-    // until the guest opens the envelope. play() then fetches the head only and
-    // starts as soon as it can, instead of waiting for the whole file.
+    // No src in the markup and preload "none": the track never downloads until
+    // the guest opens the envelope. play() then fetches the head only and starts
+    // as soon as it can, instead of waiting for the whole file.
     const el = new Audio()
     el.src = src
     el.loop = true
