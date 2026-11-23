@@ -207,19 +207,25 @@ export default function InvitationCover({ guest, nextAnchor }: { guest: string |
         className="cover-welcome absolute inset-0 z-20 flex items-center justify-center overflow-y-auto px-5 pt-[max(2.5rem,env(safe-area-inset-top))] pb-[max(5rem,env(safe-area-inset-bottom))] outline-none"
       >
         <div className="mx-auto w-full max-w-[30rem] text-center">
-          <div className="relative mx-auto w-[clamp(8.5rem,21vh,11rem)]">
+          <div className="relative mx-auto aspect-[4/5] w-[clamp(8.5rem,21vh,11rem)]">
             <div
               aria-hidden="true"
-              className="absolute inset-0 border-[5px] border-sand bg-teal [clip-path:url(#welcome-arch)]"
+              className="absolute inset-0 bg-teal [clip-path:url(#welcome-arch)]"
             />
-            <div className="relative aspect-[4/5] [clip-path:url(#welcome-arch)]">
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 border-[5px] border-sand [clip-path:url(#welcome-arch)]"
+            />
+            {/* Outside the arch clip, so the boy stands in front of the frame
+                instead of being cropped inside it. */}
+            <div className="pointer-events-none absolute -inset-x-[10%] -bottom-[5%] top-[-6%]">
               {/* Bobbed on the same keyframes as the kid peeking over the envelope. */}
               <img
                 src="/img/boy-wave.webp"
                 alt="Ilustrasi anak melambaikan tangan menyambut tamu"
                 width={525}
                 height={900}
-                className="cover-welcome-kid h-full w-full object-cover object-[50%_30%]"
+                className="cover-welcome-kid h-full w-full object-contain object-bottom drop-shadow-[0_10px_14px_rgba(16,56,58,.18)]"
               />
             </div>
             <svg width="0" height="0" className="absolute" aria-hidden="true">

@@ -70,7 +70,7 @@ export default function OpeningGreeting() {
 
           <Reveal delay={0.2}>
             <h2 id="salam-title" className="mt-4 text-h2 text-teal">
-              {invitation.child.nickname}
+              {invitation.child.fullName}
             </h2>
             <div className="gold-rule mx-auto mt-3 w-28 md:mx-0" />
             <p className="mt-3 text-sm font-bold tracking-wide text-emerald">Putra dari</p>
