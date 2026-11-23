@@ -24,12 +24,12 @@ export default function EventDetails() {
       <div className="relative mx-auto max-w-6xl">
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <Reveal>
-            <p className="label">Catat tanggalnya</p>
+            <p className="label">Waktu dan Tempat</p>
             <h2 id="acara-title" className="mt-2 text-h2 text-teal">
-              Hari Bahagia Putra Kami
+              Hari Bahagia Kami
             </h2>
           </Reveal>
-          <Reveal delay={0.1}>
+          {/* <Reveal delay={0.1}>
             <div className="flex flex-wrap gap-2">
               {occasions.map((occasion, i) => (
                 <span
@@ -40,7 +40,7 @@ export default function EventDetails() {
                 </span>
               ))}
             </div>
-          </Reveal>
+          </Reveal> */}
         </div>
 
         <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:gap-12">
@@ -83,9 +83,9 @@ export default function EventDetails() {
                   <a href={cal.google} target="_blank" rel="noreferrer" className="btn-ghost">
                     Simpan ke Google Calendar
                   </a>
-                  <a href="/api/calendar" download="aqiqah-khitanan.ics" className="btn-ghost">
+                  {/* <a href="/api/calendar" download="aqiqah-khitanan.ics" className="btn-ghost">
                     Unduh .ics
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>

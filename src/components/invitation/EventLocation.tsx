@@ -149,7 +149,7 @@ export default function EventLocation() {
                   className="h-40 w-auto flex-none self-end"
                 />
                 <p className="mb-2 rounded-lg rounded-bl-none border border-sand bg-cream px-4 py-3 text-sm font-semibold text-teal">
-                  Sampai jumpa di sana! Kami sudah siapkan tempat duduk untukmu.
+                  Sampai jumpa di tempat acara!
                 </p>
               </div>
             </Reveal>
