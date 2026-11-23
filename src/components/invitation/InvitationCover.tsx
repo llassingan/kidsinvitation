@@ -99,10 +99,10 @@ export default function InvitationCover({ guest, nextAnchor }: { guest: string |
             </p>
             <p className="label mt-2 text-[0.65rem]">Undangan syukuran</p>
             <p className="mt-1 font-display text-[clamp(1.4rem,1rem+1.6vw,1.8rem)] leading-[1.05] font-semibold text-teal">
-              Aqiqah <span className="font-normal italic text-terracotta">&amp;</span> Khitanan
+              {invitation.event.title}
             </p>
             <div className="gold-rule mx-auto mt-2.5 w-20" />
-            <p className="mt-2.5 text-[0.7rem] text-ink/70">untuk putra kami,</p>
+            <p className="mt-2.5 text-[0.7rem] text-ink/70">Putra kami</p>
             <p className="font-display text-lg leading-tight font-semibold text-emerald">
               {invitation.child.nickname}
             </p>
@@ -199,31 +199,49 @@ export default function InvitationCover({ guest, nextAnchor }: { guest: string |
         </div>
       </div>
 
+      {/* One centred column under an arched portrait; the scroll cue sits in the
+          footer row of the grid, never beside the greeting. */}
       <div
         id="undangan-isi"
         tabIndex={-1}
-        className="cover-welcome absolute inset-0 z-20 flex items-center justify-center px-5 py-10 outline-none"
+        className="cover-welcome absolute inset-0 z-20 flex items-center justify-center overflow-y-auto px-5 pt-[max(2.5rem,env(safe-area-inset-top))] pb-[max(5rem,env(safe-area-inset-bottom))] outline-none"
       >
-        <div className="w-full max-w-[32rem] text-center">
-          <img
-            src="/img/boy-wave.webp"
-            alt="Ilustrasi anak melambaikan tangan menyambut tamu"
-            width={525}
-            height={900}
-            className="mx-auto h-[clamp(9rem,24vh,13rem)] w-auto drop-shadow-[0_18px_20px_rgba(16,56,58,.16)]"
-          />
-          <p className="label mt-3">{invitation.event.title}</p>
-          <h1 className="mt-1 text-h1 text-teal">Selamat datang</h1>
-          <p className="mx-auto mt-3 max-w-[28rem] text-ink/80">
-            Terima kasih telah membuka undangan kami untuk {invitation.child.nickname}.
+        <div className="mx-auto w-full max-w-[30rem] text-center">
+          <div className="relative mx-auto w-[clamp(7.5rem,20vh,10rem)]">
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 border-[5px] border-sand bg-teal [clip-path:url(#welcome-arch)]"
+            />
+            <div className="relative aspect-[4/5] [clip-path:url(#welcome-arch)]">
+              <img
+                src="/img/boy-wave.webp"
+                alt="Ilustrasi anak melambaikan tangan menyambut tamu"
+                width={525}
+                height={900}
+                className="h-full w-full object-cover object-[50%_30%]"
+              />
+            </div>
+            <svg width="0" height="0" className="absolute" aria-hidden="true">
+              <defs>
+                <clipPath id="welcome-arch" clipPathUnits="objectBoundingBox">
+                  <path d="M0.5 0 C0.34 0.02 0.22 0.09 0.13 0.2 C0.05 0.3 0 0.42 0 0.55 V0.97 Q0 1 0.035 1 H0.965 Q1 1 1 0.97 V0.55 C1 0.42 0.95 0.3 0.87 0.2 C0.78 0.09 0.66 0.02 0.5 0 Z" />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+
+          <p className="arabic arabic-compact mt-5 text-emerald" lang="ar" dir="rtl">
+            السلام عليكم ورحمة الله وبركاته
           </p>
+          <h1 className="mt-1 text-h1 text-teal">Assalamu&apos;alaikum</h1>
+          <p className="mx-auto mt-3 max-w-[28rem] text-ink/80">Bapak/Ibu sekalian.</p>
         </div>
 
         {nextAnchor && (
         <a
           href={nextAnchor}
           aria-label="Gulir ke undangan"
-          className="cover-cue absolute inset-x-0 bottom-5 mx-auto flex w-24 flex-col items-center gap-1 rounded-full py-2 text-teal/70 transition-colors hover:text-teal focus-visible:text-teal"
+          className="cover-cue absolute inset-x-0 bottom-[max(1rem,env(safe-area-inset-bottom))] mx-auto flex w-24 flex-col items-center gap-1 rounded-full py-2 text-teal/70 transition-colors hover:text-teal focus-visible:text-teal"
         >
           <svg className="cue-arrow" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M5 9l7 7 7-7" />

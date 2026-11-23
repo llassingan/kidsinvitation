@@ -22,9 +22,9 @@ const arabic = Amiri({
   weight: ["400", "700"],
 });
 
-// Deployment can override the public origin; previews break if og:image stays on localhost.
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? invitation.seo.siteUrl;
-const title = `Undangan Aqiqah & Khitanan ${invitation.child.fullName}`;
+const siteUrl = invitation.seo.siteUrl;
+// The occasion comes from EVENT_TITLE, so an aqiqah-only preview never promises khitanan.
+const title = `Undangan ${invitation.event.title} ${invitation.child.fullName}`;
 const description = invitation.seo.description;
 const previewAlt = `Ilustrasi ${invitation.child.nickname} melambaikan tangan di depan masjid berkubah`;
 
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "/",
-    siteName: `Aqiqah & Khitanan ${invitation.child.nickname}`,
+    siteName: `${invitation.event.title} ${invitation.child.nickname}`,
     locale: "id_ID",
     title,
     description,

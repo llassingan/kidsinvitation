@@ -1,13 +1,85 @@
-import invitationJson from "@/data/invitation.json";
+/**
+ * Every value comes from a NEXT_PUBLIC_* variable so this module is safe to
+ * import from Client Components. Each one also has a server-only twin without
+ * the prefix, which wins at build time and keeps the copy out of the bundle.
+ */
 
-export type Invitation = typeof invitationJson;
+const key = (publicName: string) => publicName.replace("NEXT_PUBLIC_", "");
 
-export const invitation: Invitation = invitationJson;
+function read(publicName: string, fallback: string): string {
+  const value = process.env[key(publicName)] || process.env[publicName];
+  return value === undefined || value === "" ? fallback : value;
+}
 
+function readBool(publicName: string, fallback: boolean): boolean {
+  return read(publicName, fallback ? "true" : "false") !== "false";
+}
+
+const invitation = {
+  sections: {
+    cover: { show: readBool("NEXT_PUBLIC_SECTION_COVER", true) },
+    event: { show: readBool("NEXT_PUBLIC_SECTION_EVENT", true) },
+    dresscode: { show: readBool("NEXT_PUBLIC_SECTION_DRESSCODE", true) },
+    location: { show: readBool("NEXT_PUBLIC_SECTION_LOCATION", true) },
+    gift: { show: readBool("NEXT_PUBLIC_SECTION_GIFT", true) },
+    wishes: { show: readBool("NEXT_PUBLIC_SECTION_WISHES", true) },
+    footer: { show: readBool("NEXT_PUBLIC_SECTION_FOOTER", true) },
+  },
+  child: {
+    nickname: read("NEXT_PUBLIC_CHILD_NICKNAME", "[Nama Panggilan]"),
+    fullName: read("NEXT_PUBLIC_CHILD_FULL_NAME", "[Nama Lengkap Anak]"),
+    illustration: read("NEXT_PUBLIC_CHILD_ILLUSTRATION", "/img/baby-portrait.webp"),
+  },
+  parents: {
+    father: read("NEXT_PUBLIC_FATHER_NAME", "[Nama Ayah]"),
+    mother: read("NEXT_PUBLIC_MOTHER_NAME", "[Nama Ibu]"),
+  },
+  event: {
+    title: read("NEXT_PUBLIC_EVENT_TITLE", "Aqiqah"),
+    date: read("NEXT_PUBLIC_EVENT_DATE", "2026-12-20"),
+    startTime: read("NEXT_PUBLIC_EVENT_START", "09:00"),
+    endTime: read("NEXT_PUBLIC_EVENT_END", "12:00"),
+    timezone: read("NEXT_PUBLIC_EVENT_TIMEZONE", "Asia/Makassar"),
+    timezoneLabel: read("NEXT_PUBLIC_EVENT_TIMEZONE_LABEL", "WITA"),
+    dressCode: read("NEXT_PUBLIC_DRESS_CODE", ""),
+  },
+  venue: {
+    name: read("NEXT_PUBLIC_VENUE_NAME", ""),
+    address: read("NEXT_PUBLIC_VENUE_ADDRESS", ""),
+    note: read("NEXT_PUBLIC_VENUE_NOTE", ""),
+    mapsUrl: read("NEXT_PUBLIC_MAPS_URL", ""),
+  },
+  gift: {
+    intro: read(
+      "NEXT_PUBLIC_GIFT_INTRO",
+      "Kehadiran dan doa Bapak/Ibu sudah cukup membahagiakan kami. Bila tetap ingin menitipkan tanda kasih, kami sediakan rekening berikut.",
+    ),
+    bank: read("NEXT_PUBLIC_GIFT_BANK", ""),
+    accountNumber: read("NEXT_PUBLIC_GIFT_ACCOUNT_NUMBER", ""),
+    accountHolder: read("NEXT_PUBLIC_GIFT_ACCOUNT_HOLDER", ""),
+    note: read("NEXT_PUBLIC_GIFT_NOTE", ""),
+  },
+  wishes: {
+    showPublicWishes: readBool("NEXT_PUBLIC_SHOW_PUBLIC_WISHES", true),
+  },
+  audio: {
+    enabled: readBool("NEXT_PUBLIC_AUDIO_ENABLED", true),
+    src: read("NEXT_PUBLIC_AUDIO_SRC", ""),
+    volume: Number(read("NEXT_PUBLIC_AUDIO_VOLUME", "0.35")),
+  },
+  seo: {
+    siteUrl: read("NEXT_PUBLIC_SITE_URL", "http://localhost:3000"),
+    description: read("NEXT_PUBLIC_SEO_DESCRIPTION", "Undangan syukuran aqiqah dan khitanan putra kami."),
+  },
+};
+
+export type Invitation = typeof invitation;
 export type SectionName = keyof Invitation["sections"];
 
+export { invitation };
+
 /**
- * Sections are opt-out: a section renders unless its JSON entry says show:false,
+ * Sections are opt-out: a section renders unless its env entry says false,
  * so hiding a block never means deleting its markup.
  */
 export function sectionShown(name: SectionName): boolean {
@@ -39,23 +111,18 @@ export function formatEventDay(date: Date): string {
   return `${dayNames[date.getDay()]}, ${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
 }
 
-export function formatBirthDate(iso: string): string {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return "[Tanggal Lahir]";
-  const d = new Date(`${iso}T00:00:00`);
-  return `${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`;
-}
-
-// Age is computed from the birth date so the invitation never goes stale.
-export function ageInMonths(birthIso: string, at: Date = new Date()): number {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(birthIso)) return Number.NaN;
-  const birth = new Date(`${birthIso}T00:00:00`);
-  let months = (at.getFullYear() - birth.getFullYear()) * 12 + at.getMonth() - birth.getMonth();
-  if (at.getDate() < birth.getDate()) months -= 1;
-  return Math.max(0, months);
-}
-
-export function fullDateText(data: Invitation): string {
-  return `${data.child.birthPlace}, ${formatBirthDate(data.child.birthDate)}`;
+/**
+ * EVENT_TITLE is the whole occasion ("Aqiqah & Khitanan" or just "Aqiqah"),
+ * so the copy never claims khitanan for an aqiqah-only invitation. Nouns are
+ * lowercased to follow "syukuran".
+ */
+export function eventTitleParts(data: Invitation = invitation) {
+  const nouns = data.event.title
+    .split(/\s*(?:&|dan)\s*/i)
+    .map((label) => label.trim())
+    .filter(Boolean)
+    .map((label) => label.charAt(0).toLowerCase() + label.slice(1));
+  return nouns.length ? nouns : ["aqiqah"];
 }
 
 // Calendar links use the event's own wall clock plus its timezone, so the
@@ -64,7 +131,7 @@ export function calendarUrls(data: Invitation) {
   const day = data.event.date.replace(/-/g, "");
   const start = `${day}T${data.event.startTime.replace(":", "")}00`;
   const end = `${day}T${data.event.endTime.replace(":", "")}00`;
-  const title = `Aqiqah & Khitanan ${data.child.fullName}`;
+  const title = `${data.event.title} ${data.child.fullName}`;
   const place = `${data.venue.name}, ${data.venue.address}`;
   const google = new URL("https://calendar.google.com/calendar/render");
   google.searchParams.set("action", "TEMPLATE");

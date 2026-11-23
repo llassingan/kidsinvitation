@@ -1,14 +1,17 @@
 'use client'
 
 import { motion, useReducedMotion } from 'motion/react'
-import { calendarUrls, eventDate, formatEventDay, invitation, sectionShown } from '@/lib/invitation'
+import { calendarUrls, eventDate, eventTitleParts, formatEventDay, invitation, sectionShown } from '@/lib/invitation'
 import Reveal from '@/components/ui/Reveal'
 import Countdown from './Countdown'
+
+const OCCASION_TONE = ['bg-terracotta', 'bg-emerald', 'bg-teal']
 
 export default function EventDetails() {
   const reduced = useReducedMotion()
   const start = eventDate()
   const cal = calendarUrls(invitation)
+  const occasions = eventTitleParts()
 
   return (
     <section
@@ -27,15 +30,20 @@ export default function EventDetails() {
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <div className="flex gap-2">
-              <span className="rounded-md bg-terracotta px-3 py-1.5 text-sm font-bold text-cream">Aqiqah</span>
-              <span className="rounded-md bg-emerald px-3 py-1.5 text-sm font-bold text-cream">Khitanan</span>
+            <div className="flex flex-wrap gap-2">
+              {occasions.map((occasion, i) => (
+                <span
+                  key={occasion}
+                  className={`rounded-md px-3 py-1.5 text-sm font-bold text-cream ${OCCASION_TONE[i % OCCASION_TONE.length]}`}
+                >
+                  {occasion.charAt(0).toUpperCase() + occasion.slice(1)}
+                </span>
+              ))}
             </div>
           </Reveal>
         </div>
 
         <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:gap-12">
-          {/* calendar board */}
           <Reveal>
             <div className="relative overflow-hidden rounded-lg border-2 border-teal bg-cream shadow-lift">
               <div className="flex items-center justify-between bg-teal px-5 py-3 text-cream">
@@ -69,22 +77,6 @@ export default function EventDetails() {
                     {invitation.event.endTime.replace(':', '.')} {invitation.event.timezoneLabel}
                   </p>
                   <p className="mt-1 text-sm text-ink/70">{invitation.venue.name}</p>
-                </div>
-
-                <div className="col-span-2">
-                  <p className="label">Rangkaian acara</p>
-                  <ol className="mt-2 space-y-2">
-                    {invitation.event.runs.map((run, i) => (
-                      <Reveal as="li" key={run} delay={0.08 * i}>
-                        <div className="flex items-center gap-3 rounded-md border border-sand/70 bg-cream/70 px-3 py-2">
-                          <span className="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-emerald text-sm font-bold text-cream">
-                            {i + 1}
-                          </span>
-                          <span className="font-semibold text-ink">{run}</span>
-                        </div>
-                      </Reveal>
-                    ))}
-                  </ol>
                 </div>
 
                 <div className="col-span-2 flex flex-wrap items-center gap-3 border-t border-dashed border-sand pt-4">

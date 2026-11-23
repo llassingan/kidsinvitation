@@ -76,7 +76,9 @@ function GiftParcel({ className }: { className?: string }) {
 }
 
 export default function GiftSection() {
-  const [copied, setCopied] = useState<number | null>(null)
+  // One account per invitation; an empty bank hides the card.
+  const bank = invitation.gift.bank
+  const [copied, setCopied] = useState(false)
   const timer = useRef<number | null>(null)
 
   useEffect(() => {
@@ -85,11 +87,11 @@ export default function GiftSection() {
     }
   }, [])
 
-  const copy = async (index: number, number: string) => {
-    await writeClipboard(number)
-    setCopied(index)
+  const copy = async () => {
+    await writeClipboard(invitation.gift.accountNumber)
+    setCopied(true)
     if (timer.current) window.clearTimeout(timer.current)
-    timer.current = window.setTimeout(() => setCopied(null), 2200)
+    timer.current = window.setTimeout(() => setCopied(false), 2200)
   }
 
   return (
@@ -123,8 +125,8 @@ export default function GiftSection() {
               </div>
             </Reveal>
 
-            {invitation.gift.accounts.map((account, index) => (
-              <Reveal key={`${account.bank}-${index}`} delay={0.08 * index}>
+            {bank && (
+              <Reveal>
                 <article className="gift-card relative overflow-hidden rounded-lg border border-sand bg-gradient-to-br from-teal to-emerald p-5 text-cream shadow-lift">
                   <div aria-hidden="true" className="geo-bg absolute inset-0 opacity-[0.12]" />
                   <div aria-hidden="true" className="gift-sheen" />
@@ -132,7 +134,7 @@ export default function GiftSection() {
                   <div className="relative">
                     <div className="flex items-start justify-between gap-3">
                       <p className="text-[0.68rem] font-bold tracking-[0.18em] text-gold uppercase">
-                        {account.bank}
+                        {bank}
                       </p>
                       <span aria-hidden="true" className="h-5 w-5 flex-none text-gold">
                         <Star />
@@ -140,16 +142,16 @@ export default function GiftSection() {
                     </div>
 
                     <p className="mt-3 font-display text-[clamp(1.3rem,1rem+2vw,1.75rem)] leading-none tracking-[0.04em] break-words text-cream select-all [font-variant-numeric:tabular-nums]">
-                      {account.number}
+                      {invitation.gift.accountNumber}
                     </p>
-                    <p className="mt-2 text-sm text-cream">a.n. {account.holder}</p>
+                    <p className="mt-2 text-sm text-cream">a.n. {invitation.gift.accountHolder}</p>
 
                     <button
                       type="button"
-                      onClick={() => copy(index, account.number)}
+                      onClick={copy}
                       className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-md border border-gold/70 px-4 text-sm font-bold text-cream transition-colors hover:bg-gold hover:text-teal"
                     >
-                      {copied === index ? (
+                      {copied ? (
                         <svg
                           viewBox="0 0 24 24"
                           width="16"
@@ -178,12 +180,12 @@ export default function GiftSection() {
                           <path d="M5 15V6a2 2 0 0 1 2-2h9" />
                         </svg>
                       )}
-                      {copied === index ? 'Tersalin' : 'Salin nomor'}
+                      {copied ? 'Tersalin' : 'Salin nomor'}
                     </button>
                   </div>
                 </article>
               </Reveal>
-            ))}
+            )}
 
             {invitation.gift.note && (
               <Reveal delay={0.12}>
@@ -193,7 +195,7 @@ export default function GiftSection() {
           </div>
 
           <p className="sr-only" aria-live="polite">
-            {copied !== null ? 'Nomor rekening disalin ke papan klip.' : ''}
+            {copied ? 'Nomor rekening disalin ke papan klip.' : ''}
           </p>
         </div>
       </div>

@@ -1,6 +1,5 @@
 import InvitationCover from "@/components/invitation/InvitationCover";
 import OpeningGreeting from "@/components/invitation/OpeningGreeting";
-import ChildProfile from "@/components/invitation/ChildProfile";
 import EventDetails from "@/components/invitation/EventDetails";
 import EventLocation from "@/components/invitation/EventLocation";
 import GiftSection from "@/components/invitation/GiftSection";
@@ -22,20 +21,17 @@ function guestFrom(params: { [key: string]: string | string[] | undefined }): st
   return value.replace(/[<>]/g, "").slice(0, 80) || null;
 }
 
-// First section still visible, so the cover's scroll cue never points at a hidden anchor.
-const firstAnchor = sectionShown("greeting")
-  ? "#salam"
-  : sectionShown("profile")
-    ? "#profil"
-    : sectionShown("event")
-      ? "#acara"
-      : sectionShown("location")
-        ? "#lokasi"
-        : sectionShown("gift")
-          ? "#hadiah"
-          : sectionShown("wishes")
-          ? "#doa"
-          : null;
+// The greeting always renders; later sans are optional, so the cover's scroll cue
+// never points at a hidden anchor.
+const firstAnchor = sectionShown("event")
+  ? "#acara"
+  : sectionShown("location")
+    ? "#lokasi"
+    : sectionShown("gift")
+      ? "#hadiah"
+      : sectionShown("wishes")
+        ? "#doa"
+        : "#salam";
 
 export default async function Page({ searchParams }: Props) {
   const guest = guestFrom(await searchParams);
@@ -46,8 +42,7 @@ export default async function Page({ searchParams }: Props) {
     <main id="top">
       {cover && <InvitationCover guest={guest} nextAnchor={firstAnchor} />}
       <AfterCover gated={cover}>
-        {sectionShown("greeting") && <OpeningGreeting />}
-        {sectionShown("profile") && <ChildProfile />}
+        <OpeningGreeting />
         {sectionShown("event") && <EventDetails />}
         {sectionShown("location") && <EventLocation />}
         {sectionShown("gift") && <GiftSection />}
