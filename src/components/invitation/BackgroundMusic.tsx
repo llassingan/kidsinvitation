@@ -31,9 +31,13 @@ export default function BackgroundMusic({ src, playing }: { src: string; playing
 
   useEffect(() => {
     if (!src) return
-    const el = new Audio(src)
+    // No src in the markup and preload "none": the 4 MB track never downloads
+    // until the guest opens the envelope. play() then fetches the head only and
+    // starts as soon as it can, instead of waiting for the whole file.
+    const el = new Audio()
+    el.src = src
     el.loop = true
-    el.preload = 'auto'
+    el.preload = 'none'
     el.volume = 0
     el.setAttribute('playsinline', '')
     el.addEventListener('playing', () => {
@@ -78,7 +82,8 @@ export default function BackgroundMusic({ src, playing }: { src: string; playing
       window.removeEventListener('pagehide', onPageHide)
       window.removeEventListener('pageshow', onPageShow)
       el.pause()
-      el.src = ''
+      // Dropping src would make the element fetch the page itself; detaching is enough.
+      el.removeAttribute('src')
       audio.current = null
     }
   }, [src, fade])
