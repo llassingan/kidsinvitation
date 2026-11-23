@@ -1,75 +1,234 @@
 /**
  * Every value comes from a NEXT_PUBLIC_* variable so this module is safe to
- * import from Client Components. Each one also has a server-only twin without
- * the prefix, which wins at build time and keeps the copy out of the bundle.
+ * import from Client Components.
+ *
+ * Next inlines only the whole `process.env.NEXT_PUBLIC_X` expression, so each
+ * read is its own statement: anything chained onto it (`a || b`, a variable key)
+ * is left as a runtime lookup, and the browser has no env to look up.
  */
 
-const key = (publicName: string) => publicName.replace("NEXT_PUBLIC_", "");
-
-function read(publicName: string, fallback: string): string {
-  const value = process.env[key(publicName)] || process.env[publicName];
-  return value === undefined || value === "" ? fallback : value;
+function sectionCover(): string {
+  const value = process.env.NEXT_PUBLIC_SECTION_COVER;
+  return value === undefined || value === "" ? "true" : value;
 }
 
-function readBool(publicName: string, fallback: boolean): boolean {
-  return read(publicName, fallback ? "true" : "false") !== "false";
+function sectionEvent(): string {
+  const value = process.env.NEXT_PUBLIC_SECTION_EVENT;
+  return value === undefined || value === "" ? "true" : value;
+}
+
+function sectionDresscode(): string {
+  const value = process.env.NEXT_PUBLIC_SECTION_DRESSCODE;
+  return value === undefined || value === "" ? "true" : value;
+}
+
+function sectionLocation(): string {
+  const value = process.env.NEXT_PUBLIC_SECTION_LOCATION;
+  return value === undefined || value === "" ? "true" : value;
+}
+
+function sectionGift(): string {
+  const value = process.env.NEXT_PUBLIC_SECTION_GIFT;
+  return value === undefined || value === "" ? "true" : value;
+}
+
+function sectionWishes(): string {
+  const value = process.env.NEXT_PUBLIC_SECTION_WISHES;
+  return value === undefined || value === "" ? "true" : value;
+}
+
+function sectionFooter(): string {
+  const value = process.env.NEXT_PUBLIC_SECTION_FOOTER;
+  return value === undefined || value === "" ? "true" : value;
+}
+
+function childNickname(): string {
+  const value = process.env.NEXT_PUBLIC_CHILD_NICKNAME;
+  return value === undefined || value === "" ? "[Nama Panggilan]" : value;
+}
+
+function childFullName(): string {
+  const value = process.env.NEXT_PUBLIC_CHILD_FULL_NAME;
+  return value === undefined || value === "" ? "[Nama Lengkap Anak]" : value;
+}
+
+function childIllustration(): string {
+  const value = process.env.NEXT_PUBLIC_CHILD_ILLUSTRATION;
+  return value === undefined || value === "" ? "/img/baby-portrait.webp" : value;
+}
+
+function fatherName(): string {
+  const value = process.env.NEXT_PUBLIC_FATHER_NAME;
+  return value === undefined || value === "" ? "[Nama Ayah]" : value;
+}
+
+function motherName(): string {
+  const value = process.env.NEXT_PUBLIC_MOTHER_NAME;
+  return value === undefined || value === "" ? "[Nama Ibu]" : value;
+}
+
+function eventTitle(): string {
+  const value = process.env.NEXT_PUBLIC_EVENT_TITLE;
+  return value === undefined || value === "" ? "Aqiqah" : value;
+}
+
+function eventDateValue(): string {
+  const value = process.env.NEXT_PUBLIC_EVENT_DATE;
+  return value === undefined || value === "" ? "2026-12-20" : value;
+}
+
+function eventStart(): string {
+  const value = process.env.NEXT_PUBLIC_EVENT_START;
+  return value === undefined || value === "" ? "09:00" : value;
+}
+
+function eventEnd(): string {
+  const value = process.env.NEXT_PUBLIC_EVENT_END;
+  return value === undefined || value === "" ? "12:00" : value;
+}
+
+function eventTimezoneLabel(): string {
+  const value = process.env.NEXT_PUBLIC_EVENT_TIMEZONE_LABEL;
+  return value === undefined || value === "" ? "WITA" : value;
+}
+
+function eventTimezone(): string {
+  const value = process.env.NEXT_PUBLIC_EVENT_TIMEZONE;
+  return value === undefined || value === "" ? "Asia/Makassar" : value;
+}
+
+function dressCode(): string {
+  const value = process.env.NEXT_PUBLIC_DRESS_CODE;
+  return value === undefined || value === "" ? "" : value;
+}
+
+function venueName(): string {
+  const value = process.env.NEXT_PUBLIC_VENUE_NAME;
+  return value === undefined || value === "" ? "" : value;
+}
+
+function venueAddress(): string {
+  const value = process.env.NEXT_PUBLIC_VENUE_ADDRESS;
+  return value === undefined || value === "" ? "" : value;
+}
+
+function venueNote(): string {
+  const value = process.env.NEXT_PUBLIC_VENUE_NOTE;
+  return value === undefined || value === "" ? "" : value;
+}
+
+function mapsUrl(): string {
+  const value = process.env.NEXT_PUBLIC_MAPS_URL;
+  return value === undefined || value === "" ? "" : value;
+}
+
+function giftIntro(): string {
+  const value = process.env.NEXT_PUBLIC_GIFT_INTRO;
+  return value === undefined || value === "" ? "Kehadiran dan doa Bapak/Ibu sudah cukup membahagiakan kami. Bila tetap ingin menitipkan tanda kasih, kami sediakan rekening berikut." : value;
+}
+
+function giftBank(): string {
+  const value = process.env.NEXT_PUBLIC_GIFT_BANK;
+  return value === undefined || value === "" ? "" : value;
+}
+
+function giftAccountNumber(): string {
+  const value = process.env.NEXT_PUBLIC_GIFT_ACCOUNT_NUMBER;
+  return value === undefined || value === "" ? "" : value;
+}
+
+function giftAccountHolder(): string {
+  const value = process.env.NEXT_PUBLIC_GIFT_ACCOUNT_HOLDER;
+  return value === undefined || value === "" ? "" : value;
+}
+
+function giftNote(): string {
+  const value = process.env.NEXT_PUBLIC_GIFT_NOTE;
+  return value === undefined || value === "" ? "" : value;
+}
+
+function showPublicWishes(): string {
+  const value = process.env.NEXT_PUBLIC_SHOW_PUBLIC_WISHES;
+  return value === undefined || value === "" ? "true" : value;
+}
+
+function audioEnabled(): string {
+  const value = process.env.NEXT_PUBLIC_AUDIO_ENABLED;
+  return value === undefined || value === "" ? "true" : value;
+}
+
+function audioSrc(): string {
+  const value = process.env.NEXT_PUBLIC_AUDIO_SRC;
+  return value === undefined || value === "" ? "" : value;
+}
+
+function audioVolume(): string {
+  const value = process.env.NEXT_PUBLIC_AUDIO_VOLUME;
+  return value === undefined || value === "" ? "0.35" : value;
+}
+
+function siteUrl(): string {
+  const value = process.env.NEXT_PUBLIC_SITE_URL;
+  return value === undefined || value === "" ? "http://localhost:3000" : value;
+}
+
+function seoDescription(): string {
+  const value = process.env.NEXT_PUBLIC_SEO_DESCRIPTION;
+  return value === undefined || value === "" ? "Undangan syukuran aqiqah dan khitanan putra kami." : value;
 }
 
 const invitation = {
   sections: {
-    cover: { show: readBool("NEXT_PUBLIC_SECTION_COVER", true) },
-    event: { show: readBool("NEXT_PUBLIC_SECTION_EVENT", true) },
-    dresscode: { show: readBool("NEXT_PUBLIC_SECTION_DRESSCODE", true) },
-    location: { show: readBool("NEXT_PUBLIC_SECTION_LOCATION", true) },
-    gift: { show: readBool("NEXT_PUBLIC_SECTION_GIFT", true) },
-    wishes: { show: readBool("NEXT_PUBLIC_SECTION_WISHES", true) },
-    footer: { show: readBool("NEXT_PUBLIC_SECTION_FOOTER", true) },
+    cover: { show: sectionCover() !== "false" },
+    event: { show: sectionEvent() !== "false" },
+    dresscode: { show: sectionDresscode() !== "false" },
+    location: { show: sectionLocation() !== "false" },
+    gift: { show: sectionGift() !== "false" },
+    wishes: { show: sectionWishes() !== "false" },
+    footer: { show: sectionFooter() !== "false" },
   },
   child: {
-    nickname: read("NEXT_PUBLIC_CHILD_NICKNAME", "[Nama Panggilan]"),
-    fullName: read("NEXT_PUBLIC_CHILD_FULL_NAME", "[Nama Lengkap Anak]"),
-    illustration: read("NEXT_PUBLIC_CHILD_ILLUSTRATION", "/img/baby-portrait.webp"),
+    nickname: childNickname(),
+    fullName: childFullName(),
+    illustration: childIllustration(),
   },
   parents: {
-    father: read("NEXT_PUBLIC_FATHER_NAME", "[Nama Ayah]"),
-    mother: read("NEXT_PUBLIC_MOTHER_NAME", "[Nama Ibu]"),
+    father: fatherName(),
+    mother: motherName(),
   },
   event: {
-    title: read("NEXT_PUBLIC_EVENT_TITLE", "Aqiqah"),
-    date: read("NEXT_PUBLIC_EVENT_DATE", "2026-12-20"),
-    startTime: read("NEXT_PUBLIC_EVENT_START", "09:00"),
-    endTime: read("NEXT_PUBLIC_EVENT_END", "12:00"),
-    timezone: read("NEXT_PUBLIC_EVENT_TIMEZONE", "Asia/Makassar"),
-    timezoneLabel: read("NEXT_PUBLIC_EVENT_TIMEZONE_LABEL", "WITA"),
-    dressCode: read("NEXT_PUBLIC_DRESS_CODE", ""),
+    title: eventTitle(),
+    date: eventDateValue(),
+    startTime: eventStart(),
+    endTime: eventEnd(),
+    timezone: eventTimezone(),
+    timezoneLabel: eventTimezoneLabel(),
+    dressCode: dressCode(),
   },
   venue: {
-    name: read("NEXT_PUBLIC_VENUE_NAME", ""),
-    address: read("NEXT_PUBLIC_VENUE_ADDRESS", ""),
-    note: read("NEXT_PUBLIC_VENUE_NOTE", ""),
-    mapsUrl: read("NEXT_PUBLIC_MAPS_URL", ""),
+    name: venueName(),
+    address: venueAddress(),
+    note: venueNote(),
+    mapsUrl: mapsUrl(),
   },
   gift: {
-    intro: read(
-      "NEXT_PUBLIC_GIFT_INTRO",
-      "Kehadiran dan doa Bapak/Ibu sudah cukup membahagiakan kami. Bila tetap ingin menitipkan tanda kasih, kami sediakan rekening berikut.",
-    ),
-    bank: read("NEXT_PUBLIC_GIFT_BANK", ""),
-    accountNumber: read("NEXT_PUBLIC_GIFT_ACCOUNT_NUMBER", ""),
-    accountHolder: read("NEXT_PUBLIC_GIFT_ACCOUNT_HOLDER", ""),
-    note: read("NEXT_PUBLIC_GIFT_NOTE", ""),
+    intro: giftIntro(),
+    bank: giftBank(),
+    accountNumber: giftAccountNumber(),
+    accountHolder: giftAccountHolder(),
+    note: giftNote(),
   },
   wishes: {
-    showPublicWishes: readBool("NEXT_PUBLIC_SHOW_PUBLIC_WISHES", true),
+    showPublicWishes: showPublicWishes() !== "false",
   },
   audio: {
-    enabled: readBool("NEXT_PUBLIC_AUDIO_ENABLED", true),
-    src: read("NEXT_PUBLIC_AUDIO_SRC", ""),
-    volume: Number(read("NEXT_PUBLIC_AUDIO_VOLUME", "0.35")),
+    enabled: audioEnabled() !== "false",
+    src: audioSrc(),
+    volume: Number(audioVolume()),
   },
   seo: {
-    siteUrl: read("NEXT_PUBLIC_SITE_URL", "http://localhost:3000"),
-    description: read("NEXT_PUBLIC_SEO_DESCRIPTION", "Undangan syukuran aqiqah dan khitanan putra kami."),
+    siteUrl: siteUrl(),
+    description: seoDescription(),
   },
 };
 
