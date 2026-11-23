@@ -21,17 +21,8 @@ function guestFrom(params: { [key: string]: string | string[] | undefined }): st
   return value.replace(/[<>]/g, "").slice(0, 80) || null;
 }
 
-// The greeting always renders; later sans are optional, so the cover's scroll cue
-// never points at a hidden anchor.
-const firstAnchor = sectionShown("event")
-  ? "#acara"
-  : sectionShown("location")
-    ? "#lokasi"
-    : sectionShown("gift")
-      ? "#hadiah"
-      : sectionShown("wishes")
-        ? "#doa"
-        : "#salam";
+// The greeting always renders and always comes first, so it is the cue's target.
+const firstAnchor = "#salam";
 
 export default async function Page({ searchParams }: Props) {
   const guest = guestFrom(await searchParams);
