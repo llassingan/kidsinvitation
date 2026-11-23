@@ -174,7 +174,12 @@ function siteUrl(): string {
 
 function seoDescription(): string {
   const value = process.env.NEXT_PUBLIC_SEO_DESCRIPTION;
-  return value === undefined || value === "" ? "Undangan syukuran aqiqah dan khitanan putra kami." : value;
+  return value === undefined || value === "" ? "Undangan syukuran aqiqah dan khitan putra kami." : value;
+}
+
+function clampVolume(raw: string): number {
+  const parsed = Number.parseFloat(raw);
+  return Number.isFinite(parsed) ? Math.min(Math.max(parsed, 0), 1) : 0.35;
 }
 
 const invitation = {
@@ -224,7 +229,8 @@ const invitation = {
   audio: {
     enabled: audioEnabled() !== "false",
     src: audioSrc(),
-    volume: Number(audioVolume()),
+    // A typo in the env value must not mute the invitation silently.
+    volume: clampVolume(audioVolume()),
   },
   seo: {
     siteUrl: siteUrl(),

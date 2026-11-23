@@ -65,7 +65,9 @@ export default function InvitationCover({ guest, nextAnchor }: { guest: string |
 
   return (
     <>
-      {phase !== 'closed' && <BackgroundMusic src={invitation.audio.src} />}
+      {/* Rendered from the start and keeps its identity across phases: remounting
+          would recreate the element and restart the track. It plays only on open. */}
+      <BackgroundMusic src={invitation.audio.src} playing={phase !== 'closed'} />
       <section
         aria-label="Sampul undangan"
         data-phase={phase}

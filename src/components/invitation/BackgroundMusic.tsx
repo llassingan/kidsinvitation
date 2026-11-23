@@ -3,11 +3,31 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { invitation } from '@/lib/invitation'
 
-const FADE_IN_MS = 8000
+const FADE_IN_MS = 6000
 
-export default function BackgroundMusic({ src }: { src: string }) {
-  const [playing, setPlaying] = useState(false)
+export default function BackgroundMusic({ src, playing }: { src: string; playing: boolean }) {
+  const [live, setLive] = useState(false)
+  const [muted, setMuted] = useState(false)
   const audio = useRef<HTMLAudioElement | null>(null)
+  // Kept outside the effect so a remount resumes the same track where it stopped.
+  const position = useRef(0)
+  const frame = useRef(0)
+  const armed = useRef(playing)
+
+  useEffect(() => {
+    armed.current = playing
+  }, [playing])
+
+  const fade = useCallback((node: HTMLAudioElement) => {
+    cancelAnimationFrame(frame.current)
+    const t0 = performance.now()
+    const tick = () => {
+      const done = Math.min((performance.now() - t0) / FADE_IN_MS, 1)
+      node.volume = invitation.audio.volume * done
+      if (done < 1) frame.current = requestAnimationFrame(tick)
+    }
+    frame.current = requestAnimationFrame(tick)
+  }, [])
 
   useEffect(() => {
     if (!src) return
@@ -16,56 +36,80 @@ export default function BackgroundMusic({ src }: { src: string }) {
     el.preload = 'auto'
     el.volume = 0
     el.setAttribute('playsinline', '')
-    el.addEventListener('pause', () => setPlaying(false))
-    el.addEventListener('play', () => setPlaying(true))
+    el.addEventListener('playing', () => {
+      setLive(true)
+      fade(el)
+    })
+    el.addEventListener('pause', () => setLive(false))
     audio.current = el
+
+    // Hidden tabs cannot start audio, so the request waits for the guest to come back.
+    const attempt = () => {
+      const resumeAt = position.current
+      if (resumeAt > 0 && (!el.seekable.length || resumeAt < el.duration)) el.currentTime = resumeAt
+      void el.play().then(() => {
+        // A buffered resume can skip the 'playing' event, so re-ramp here too.
+        if (el.volume === 0) fade(el)
+      }).catch(() => {})
+    }
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden') {
+        position.current = el.currentTime
+        el.pause()
+      } else if (armed.current) {
+        attempt()
+      }
+    }
+    const onPageHide = () => {
+      position.current = el.currentTime
+      el.pause()
+    }
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted && armed.current) attempt()
+    }
+
+    document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('pagehide', onPageHide)
+    window.addEventListener('pageshow', onPageShow)
+
     return () => {
+      cancelAnimationFrame(frame.current)
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('pagehide', onPageHide)
+      window.removeEventListener('pageshow', onPageShow)
       el.pause()
       el.src = ''
       audio.current = null
     }
-  }, [src])
+  }, [src, fade])
 
+  // The opening tap is the user gesture autoplay needs, so playback starts here.
+  // Setup commits the element first, which re-runs this once `audio` is set.
   useEffect(() => {
+    if (!playing || muted) return
     const el = audio.current
-    if (!el) return
-    // Mounts on the opening tap, which carries the gesture that allows autoplay.
-    // The ramp starts from silence because the tap is also a sudden transition.
-    let ramp = 0
-    el.addEventListener('playing', () => {
-      cancelAnimationFrame(ramp)
-      const start = performance.now()
-      const step = (now: number) => {
-        const progress = Math.min(1, (now - start) / FADE_IN_MS)
-        el.volume = invitation.audio.volume * progress
-        if (progress < 1) ramp = requestAnimationFrame(step)
-      }
-      ramp = requestAnimationFrame(step)
-    })
+    if (!el || !el.paused) return
+    const resumeAt = position.current
+    if (resumeAt > 0 && (!el.seekable.length || resumeAt < el.duration)) el.currentTime = resumeAt
     void el.play().catch(() => {})
-    // Pause on hide so music never plays behind another app or tab. It stays
-    // paused when the guest returns; the button is how they bring it back.
-    const onHide = () => {
-      if (document.visibilityState === 'hidden') el.pause()
-    }
-    document.addEventListener('visibilitychange', onHide)
-    window.addEventListener('pagehide', onHide)
-    return () => {
-      cancelAnimationFrame(ramp)
-      document.removeEventListener('visibilitychange', onHide)
-      window.removeEventListener('pagehide', onHide)
-    }
-  }, [src])
+  }, [playing, muted, src])
 
   const toggle = useCallback(() => {
     const el = audio.current
     if (!el) return
-    if (!el.paused) {
-      el.pause()
+    if (muted) {
+      setMuted(false)
       return
     }
-    void el.play().catch(() => {})
-  }, [])
+    // Pausing on purpose must survive the guest hiding and returning.
+    if (el.paused) {
+      position.current = el.currentTime
+      void el.play().catch(() => {})
+    } else {
+      setMuted(true)
+      el.pause()
+    }
+  }, [muted])
 
   // Nothing to toggle until a track is configured.
   if (!src || !invitation.audio.enabled) return null
@@ -74,13 +118,13 @@ export default function BackgroundMusic({ src }: { src: string }) {
     <button
       type="button"
       onClick={toggle}
-      aria-label={playing ? 'Matikan musik latar' : 'Putar musik latar'}
-      aria-pressed={playing}
-      title={playing ? 'Musik latar menyala' : 'Musik latar mati'}
+      aria-label={live ? 'Matikan musik latar' : 'Putar musik latar'}
+      aria-pressed={live}
+      title={live ? 'Musik latar menyala' : 'Musik latar mati'}
       className="fixed right-3 bottom-16 z-50 flex h-9 w-9 items-center justify-center rounded-full border border-gold/50 bg-night/85 text-cream shadow-lift transition-colors hover:bg-teal"
     >
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
-        {playing ? <path d="M9 6v12M15 6v12" /> : <path d="M8 5.5v13l10-6.5z" fill="currentColor" />}
+        {live ? <path d="M9 6v12M15 6v12" /> : <path d="M8 5.5v13l10-6.5z" fill="currentColor" />}
       </svg>
     </button>
   )
