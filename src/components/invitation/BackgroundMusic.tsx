@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { invitation } from '@/lib/invitation'
 
+const FADE_IN_MS = 8000
+
 export default function BackgroundMusic({ src }: { src: string }) {
   const [playing, setPlaying] = useState(false)
   const audio = useRef<HTMLAudioElement | null>(null)
@@ -12,7 +14,7 @@ export default function BackgroundMusic({ src }: { src: string }) {
     const el = new Audio(src)
     el.loop = true
     el.preload = 'auto'
-    el.volume = invitation.audio.volume
+    el.volume = 0
     el.setAttribute('playsinline', '')
     el.addEventListener('pause', () => setPlaying(false))
     el.addEventListener('play', () => setPlaying(true))
@@ -28,6 +30,18 @@ export default function BackgroundMusic({ src }: { src: string }) {
     const el = audio.current
     if (!el) return
     // Mounts on the opening tap, which carries the gesture that allows autoplay.
+    // The ramp starts from silence because the tap is also a sudden transition.
+    let ramp = 0
+    el.addEventListener('playing', () => {
+      cancelAnimationFrame(ramp)
+      const start = performance.now()
+      const step = (now: number) => {
+        const progress = Math.min(1, (now - start) / FADE_IN_MS)
+        el.volume = invitation.audio.volume * progress
+        if (progress < 1) ramp = requestAnimationFrame(step)
+      }
+      ramp = requestAnimationFrame(step)
+    })
     void el.play().catch(() => {})
     // Pause on hide so music never plays behind another app or tab. It stays
     // paused when the guest returns; the button is how they bring it back.
@@ -37,6 +51,7 @@ export default function BackgroundMusic({ src }: { src: string }) {
     document.addEventListener('visibilitychange', onHide)
     window.addEventListener('pagehide', onHide)
     return () => {
+      cancelAnimationFrame(ramp)
       document.removeEventListener('visibilitychange', onHide)
       window.removeEventListener('pagehide', onHide)
     }
