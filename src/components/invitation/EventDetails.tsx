@@ -24,9 +24,9 @@ export default function EventDetails() {
       <div className="relative mx-auto max-w-6xl">
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <Reveal>
-            <p className="label">Waktu dan Tempat</p>
+            {/* <p className="label">Waktu dan Tempat</p> */}
             <h2 id="acara-title" className="mt-2 text-h2 text-teal">
-              Hari Bahagia Kami
+              Waktu dan Tempat
             </h2>
           </Reveal>
           {/* <Reveal delay={0.1}>

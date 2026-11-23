@@ -49,9 +49,9 @@ export default async function Page({ searchParams }: Props) {
         <p className="relative mt-3 font-display text-2xl text-teal">
           Terima kasih atas doa dan kehadirannya
         </p>
-        <p className="relative mt-1 text-sm font-semibold text-ink/70">
+        {/* <p className="relative mt-1 text-sm font-semibold text-ink/70">
           Keluarga {invitation.parents.father} &amp; {invitation.parents.mother}
-        </p>
+        </p> */}
         <a href="#top" className="btn-ghost relative mt-6">
           Kembali ke atas
         </a>
