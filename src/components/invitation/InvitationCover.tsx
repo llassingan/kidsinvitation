@@ -207,18 +207,19 @@ export default function InvitationCover({ guest, nextAnchor }: { guest: string |
         className="cover-welcome absolute inset-0 z-20 flex items-center justify-center overflow-y-auto px-5 pt-[max(2.5rem,env(safe-area-inset-top))] pb-[max(5rem,env(safe-area-inset-bottom))] outline-none"
       >
         <div className="mx-auto w-full max-w-[30rem] text-center">
-          <div className="relative mx-auto w-[clamp(7.5rem,20vh,10rem)]">
+          <div className="relative mx-auto w-[clamp(8.5rem,21vh,11rem)]">
             <div
               aria-hidden="true"
               className="absolute inset-0 border-[5px] border-sand bg-teal [clip-path:url(#welcome-arch)]"
             />
             <div className="relative aspect-[4/5] [clip-path:url(#welcome-arch)]">
+              {/* Bobbed on the same keyframes as the kid peeking over the envelope. */}
               <img
                 src="/img/boy-wave.webp"
                 alt="Ilustrasi anak melambaikan tangan menyambut tamu"
                 width={525}
                 height={900}
-                className="h-full w-full object-cover object-[50%_30%]"
+                className="cover-welcome-kid h-full w-full object-cover object-[50%_30%]"
               />
             </div>
             <svg width="0" height="0" className="absolute" aria-hidden="true">
@@ -301,6 +302,9 @@ export default function InvitationCover({ guest, nextAnchor }: { guest: string |
         .cover-letter { transition: transform 400ms ease; }
         .cover-flap { transition: transform 400ms ease; transform-style: preserve-3d; backface-visibility: hidden; filter: drop-shadow(0 8px 8px rgba(16,56,58,.16)); }
         .cover-flap svg { overflow: visible; }
+        @media (prefers-reduced-motion: no-preference) {
+          .cover-stage[data-phase="open"] .cover-welcome-kid { animation: bob 3.6s ease-in-out infinite; transform-origin: 50% 100%; }
+        }
         .cover-stage[data-phase="open"] .cue-arrow { animation: cue-bob 1.9s ease-in-out 900ms infinite; }
         @keyframes cue-bob {
           0%, 100% { transform: translateY(0); opacity: .6; }

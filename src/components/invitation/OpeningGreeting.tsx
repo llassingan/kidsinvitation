@@ -26,12 +26,29 @@ export default function OpeningGreeting() {
       </motion.div>
 
       <div className="relative mx-auto max-w-[40rem] text-center">
-        <Reveal>
-          <p className="arabic text-emerald" lang="ar" dir="rtl">بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ</p>
+        <motion.div
+          initial={reduced ? false : { opacity: 0, y: 32 }}
+          whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.9, ease: [0.22, 0.8, 0.3, 1] }}
+          className="mx-auto w-[clamp(8rem,26vw,11rem)]"
+        >
+          <img
+            src={invitation.child.illustration}
+            alt="Ilustrasi bayi laki-laki berbaju koko putih dan peci, duduk di antara bantal"
+            width={900}
+            height={900}
+            loading="lazy"
+            className="mx-auto h-auto w-full"
+          />
+        </motion.div>
+
+        <Reveal delay={0.08}>
+          <p className="arabic mt-2 text-emerald" lang="ar" dir="rtl">بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ</p>
         </Reveal>
 
-        <Reveal delay={0.1}>
-          <p className="mt-5 text-lg leading-relaxed text-ink/85">
+        <Reveal delay={0.18}>
+          <p className="mt-4 text-lg leading-relaxed text-ink/85">
             Dengan memohon rahmat dan ridha Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri syukuran{' '}
             <span className="font-semibold text-teal">
               {occasion}
@@ -40,7 +57,7 @@ export default function OpeningGreeting() {
           </p>
         </Reveal>
 
-        <Reveal delay={0.2}>
+        <Reveal delay={0.26}>
           <h2 id="salam-title" className="mt-4 text-h2 text-teal">
             {invitation.child.nickname}
           </h2>
