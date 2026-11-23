@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { invitation } from '@/lib/invitation'
 
-const FADE_IN_MS = 6000
+const FADE_IN_MS = 3000
 
 export default function BackgroundMusic({ src, playing }: { src: string; playing: boolean }) {
   const [live, setLive] = useState(false)
