@@ -59,19 +59,12 @@ export async function POST(request: Request) {
     return Response.json({ error: "Ada isian yang belum lengkap.", errors }, { status: 422 });
   }
 
-  const wish: Wish = {
-    id: randomUUID(),
-    name,
-    message,
-    attendance,
-    createdAt: new Date().toISOString(),
-  };
-
+  let wish: Wish;
   try {
-    await addWish(wish);
+    wish = await addWish({ id: randomUUID(), name, message, attendance });
   } catch {
     return Response.json(
-      { error: "Doa belum tersimpan karena buku doa sudah penuh. Coba lagi nanti." },
+      { error: "Doa belum tersimpan karena buku doa sedang sibuk. Coba lagi sebentar lagi." },
       { status: 503 },
     );
   }
