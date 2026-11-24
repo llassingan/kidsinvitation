@@ -71,7 +71,7 @@ export default function EventDetails() {
                 </motion.div>
                 <div>
                   <p className="font-bold text-teal">{formatEventDay(start)}</p>
-                  <p className="text-sm text-ink/70">untuk {invitation.child.nickname}</p>
+                  {/* <p className="text-sm text-ink/70">untuk {invitation.child.nickname}</p> */}
                   <p className="text-sm text-ink/80">
                     {invitation.event.startTime.replace(':', '.')}&ndash;
                     {invitation.event.endTime.replace(':', '.')} {invitation.event.timezoneLabel}
