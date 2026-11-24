@@ -25,18 +25,37 @@ function guestFrom(params: { [key: string]: string | string[] | undefined }): st
 // The greeting always renders and always comes first, so it is the cue's target.
 const firstAnchor = "#salam";
 
+// Same values the layout builds, repeated here because this block replaces the
+// layout's openGraph and twitter wholesale instead of merging into them.
+const pageTitle = `Undangan ${invitation.event.title} ${invitation.child.fullName}`;
+const previewAlt = `Ilustrasi ${invitation.child.nickname} melambaikan tangan di depan masjid berkubah`;
+
 // WhatsApp and Telegram read og:description at share time, so the guest name is
 // baked into the preview instead of only showing up after the link is opened.
-// Only the description is personalized: title, image, and og:url stay shared so
-// every link keeps one cache entry per URL rather than per guest.
+// Everything except the description is left to the layout, but openGraph and
+// twitter are replaced whole rather than merged field by field: a partial block
+// would drop the image, card type, and og:url along with the fields it omits.
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const guest = guestFrom(await searchParams);
   const description = guest ? `Undangan untuk ${guest}` : invitation.seo.description;
 
   return {
     description,
-    openGraph: { description },
-    twitter: { description },
+    openGraph: {
+      type: "website",
+      url: "/",
+      siteName: `${invitation.event.title} ${invitation.child.nickname}`,
+      locale: "id_ID",
+      title: pageTitle,
+      description,
+      images: [{ url: "/og.jpg", width: 1200, height: 630, type: "image/jpeg", alt: previewAlt }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: pageTitle,
+      description,
+      images: [{ url: "/og.jpg", alt: previewAlt }],
+    },
   };
 }
 
