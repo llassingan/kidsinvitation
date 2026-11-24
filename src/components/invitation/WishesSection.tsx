@@ -158,7 +158,7 @@ export default function WishesSection() {
                 className="aspect-[16/10] w-full object-cover"
               />
               <figcaption className="absolute inset-x-0 bottom-0 bg-night/70 px-4 py-2 text-xs font-semibold text-cream">
-                Setiap doa yang Bapak/Ibu titipkan kami baca satu per satu.
+                Terima Kasih atas semua doa doa baiknya.
               </figcaption>
             </figure>
           </Reveal>
