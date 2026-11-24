@@ -248,7 +248,7 @@ export default function InvitationCover({ guest, nextAnchor }: { guest: string |
               السلام عليكم ورحمة الله وبركاته
             </p>
             <h1 className="mt-1 text-h1 text-teal">Assalamu&apos;alaikum</h1>
-            <p className="mx-auto mt-3 max-w-[28rem] text-ink/80">Bapak/Ibu sekalian.</p>
+            <p className="mx-auto mt-3 max-w-[28rem] break-words text-ink/80">{guest ?? 'Bapak/Ibu sekalian'}.</p>
           </div>
 
           {nextAnchor && (

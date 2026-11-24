@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 import { useRef } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { eventTitleParts, invitation } from '@/lib/invitation'
 import Reveal from '@/components/ui/Reveal'
 import HagiaSkyline from '@/components/ui/HagiaSkyline'
@@ -12,6 +13,9 @@ export default function OpeningGreeting() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const domeY = useSpring(useTransform(scrollYProgress, [0, 1], [40, -40]), { stiffness: 60, damping: 20 })
   const occasion = eventTitleParts().join(" dan ")
+  // The cover already cleaned and capped ?to= in the server render; this page
+  // is never prerendered (instant = false), so the same value is here.
+  const guest = useSearchParams().get('to')
 
   return (
     <section ref={ref} id="salam" className="relative overflow-hidden px-4 pt-14 pb-20 sm:pt-20" aria-labelledby="salam-title">
@@ -63,8 +67,9 @@ export default function OpeningGreeting() {
 
           <Reveal delay={0.1}>
             <p className="mt-4 text-lg leading-relaxed text-ink/85">
-              Dengan memohon rahmat dan ridha Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri syukuran{' '}
-              <span className="font-semibold text-teal">{occasion}</span> putra kami
+              Dengan memohon rahmat dan ridha Allah SWT, kami mengundang{' '}
+              <span className="font-semibold text-teal">{guest ?? 'Bapak/Ibu/Saudara/i'}</span> untuk
+              menghadiri syukuran <span className="font-semibold text-teal">{occasion}</span> putra kami
             </p>
           </Reveal>
 
