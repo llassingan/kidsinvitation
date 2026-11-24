@@ -80,9 +80,9 @@ export default function OpeningGreeting() {
             <div className="gold-rule mx-auto mt-3 w-28 md:mx-0" />
             <p className="mt-3 text-sm font-bold tracking-wide text-emerald">Putra dari</p>
             <p className="mt-1 font-display text-2xl text-teal">
-              {invitation.parents.father}
-              <span className="mx-2 text-terracotta">&amp;</span>
-              {invitation.parents.mother}
+              <span className="block sm:inline">{invitation.parents.father}</span>
+              <span className="my-1 block text-terracotta sm:my-0 sm:mx-2 sm:inline">&amp;</span>
+              <span className="block sm:inline">{invitation.parents.mother}</span>
             </p>
           </Reveal>
         </div>
