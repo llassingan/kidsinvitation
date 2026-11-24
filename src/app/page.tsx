@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import InvitationCover from "@/components/invitation/InvitationCover";
 import OpeningGreeting from "@/components/invitation/OpeningGreeting";
 import EventDetails from "@/components/invitation/EventDetails";
@@ -23,6 +24,21 @@ function guestFrom(params: { [key: string]: string | string[] | undefined }): st
 
 // The greeting always renders and always comes first, so it is the cue's target.
 const firstAnchor = "#salam";
+
+// WhatsApp and Telegram read og:description at share time, so the guest name is
+// baked into the preview instead of only showing up after the link is opened.
+// Only the description is personalized: title, image, and og:url stay shared so
+// every link keeps one cache entry per URL rather than per guest.
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const guest = guestFrom(await searchParams);
+  const description = guest ? `Undangan untuk ${guest}` : invitation.seo.description;
+
+  return {
+    description,
+    openGraph: { description },
+    twitter: { description },
+  };
+}
 
 export default async function Page({ searchParams }: Props) {
   const guest = guestFrom(await searchParams);
