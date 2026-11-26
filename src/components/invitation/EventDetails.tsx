@@ -60,6 +60,7 @@ export default function EventDetails() {
                   initial={reduced ? false : { scale: 0.86, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ type: 'spring', stiffness: 180, damping: 16 }}
+                  data-reveal=""
                   className="flex h-24 w-24 flex-col items-center justify-center rounded-md border-2 border-sand bg-cream-deep"
                 >
                   <span className="text-xs font-bold text-emerald">

@@ -61,7 +61,21 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="id"
       className={`${display.variable} ${body.variable} ${arabic.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {/* ES5 on purpose: this is the only code that runs on browsers too old
+            for the app bundle. When the bundle never boots, mark the document so
+            the reveal animations' hidden start state does not keep the invitation
+            invisible. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var r=document.documentElement;r.setAttribute("data-boot","pending");setTimeout(function(){if(r.getAttribute("data-boot")==="pending")r.setAttribute("data-boot","stalled")},3500)})()`,
+          }}
+        />
+        <noscript>
+          <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+        {children}
+      </body>
     </html>
   );
 }

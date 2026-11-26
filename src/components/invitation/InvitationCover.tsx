@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
+import type { MouseEvent } from 'react'
 import { invitation } from '@/lib/invitation'
 import { playOpen } from '@/lib/sound'
 import Star from '@/components/ui/Star'
@@ -21,6 +22,10 @@ const POLLEN = Array.from({ length: 9 }, (_, i) => ({
 
 type Phase = 'closed' | 'opening' | 'open'
 
+// The cover button is a real link for guests whose bundle never runs; it lands
+// on the first section inside the invitation.
+const ENTRY = '#salam'
+
 export default function InvitationCover({ guest, nextAnchor }: { guest: string | null; nextAnchor: string | null }) {
   const [phase, setPhase] = useState<Phase>('closed')
   const [reduced, setReduced] = useState(false)
@@ -31,6 +36,15 @@ export default function InvitationCover({ guest, nextAnchor }: { guest: string |
     sync()
     mq.addEventListener('change', sync)
     return () => mq.removeEventListener('change', sync)
+  }, [])
+
+  // A tap that lands while the bundle is still loading follows the button's
+  // href instead of calling `open`; the guest is already reading the greeting,
+  // so adopt that state instead of dropping them back on the envelope.
+  useEffect(() => {
+    if (window.location.hash !== ENTRY) return
+    setPhase('open')
+    window.history.replaceState(null, '', window.location.pathname + window.location.search)
   }, [])
 
   useEffect(() => {
@@ -48,7 +62,9 @@ export default function InvitationCover({ guest, nextAnchor }: { guest: string |
     document.getElementById('undangan-isi')?.focus({ preventScroll: true })
   }, [phase])
 
-  const open = useCallback(() => {
+  const open = useCallback((event: MouseEvent<HTMLElement>) => {
+    // Without a running bundle the anchor is the whole feature; keep it.
+    event.preventDefault()
     if (phase !== 'closed') return
     // Inside the tap handler, so the browser counts it as the gesture that
     // permits music autoplay.
@@ -159,18 +175,18 @@ export default function InvitationCover({ guest, nextAnchor }: { guest: string |
                 <p className="mt-0.5 truncate text-center text-base font-bold text-cream">
                   {guest ?? 'Bapak/Ibu/Saudara/i'}
                 </p>
-                <button
-                  type="button"
+                <a
+                  href={ENTRY}
                   onClick={open}
-                  className="mt-2.5 w-full rounded-md border-2 border-gold bg-cream px-4 py-2.5 text-base font-bold text-teal shadow-lift transition-colors hover:bg-gold"
+                  className="mt-2.5 block w-full rounded-md border-2 border-gold bg-cream px-4 py-2.5 text-center text-base font-bold text-teal shadow-lift transition-colors hover:bg-gold"
                 >
                   Buka Undangan
-                </button>
+                </a>
               </div>
             </div>
 
-            <button
-              type="button"
+            <a
+              href={ENTRY}
               onClick={open}
               tabIndex={-1}
               aria-hidden="true"
@@ -180,7 +196,7 @@ export default function InvitationCover({ guest, nextAnchor }: { guest: string |
               <span className="block w-[42%]">
                 <Star />
               </span>
-            </button>
+            </a>
 
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-50">
               {CONFETTI.map((c, i) => (

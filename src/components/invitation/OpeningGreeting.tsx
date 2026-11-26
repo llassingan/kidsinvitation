@@ -31,6 +31,7 @@ export default function OpeningGreeting() {
 
       <div className="relative mx-auto grid max-w-6xl items-end gap-10 md:grid-cols-[1.05fr_.95fr] md:gap-12">
         <motion.div
+          data-reveal=""
           className="relative order-2 mx-auto w-full max-w-[min(430px,66vw)] md:order-1 md:!max-w-[430px]"
           initial={reduced ? false : { opacity: 0, y: 40 }}
           whileInView={reduced ? undefined : { opacity: 1, y: 0 }}

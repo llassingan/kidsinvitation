@@ -323,3 +323,12 @@ h3 {
     scroll-behavior: auto !important;
   }
 }
+
+/* The bundle never booted (browser too old, scripts blocked, or still parsing):
+   the reveal animations' start state is baked into the HTML, so stop it from
+   holding the invitation invisible. The flags come from the ES5 watchdog in
+   the layout and its <noscript> twin. */
+html[data-boot="stalled"] [data-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+}

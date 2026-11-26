@@ -16,6 +16,7 @@ export default function Reveal({ children, className, delay = 0, as = 'div' }: P
 
   return (
     <Component
+      data-reveal=""
       className={className}
       initial={reduced ? false : { opacity: 0, y: 26 }}
       whileInView={reduced ? undefined : { opacity: 1, y: 0 }}

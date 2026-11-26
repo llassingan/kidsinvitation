@@ -31,6 +31,7 @@ export default function EventLocation() {
             whileInView={reduced ? undefined : { opacity: 1 }}
             viewport={{ once: true, margin: '-10%' }}
             transition={{ duration: 0.8 }}
+            data-reveal=""
             className="relative aspect-[4/5] overflow-hidden rounded-lg border-[6px] border-sand bg-[#e9efd9] shadow-lift"
           >
             <svg viewBox="0 0 400 500" className="absolute inset-0 h-full w-full" role="img" aria-label="Ilustrasi peta menuju lokasi acara">
